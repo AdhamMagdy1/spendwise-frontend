@@ -52,3 +52,10 @@ button:focus {
   outline: none;
   border: none;
 }
+/* Remove default styles for anchor links */
+a {
+  text-decoration: none; /* Remove underlines */
+  color: inherit; /* Inherit text color */
+  cursor: pointer; /* Change cursor to pointer on hover (optional) */
+  /* You can further style your links as needed */
+}
