@@ -1,6 +1,6 @@
 .goback {
   position: absolute;
-  top: 30px;
+  top: 50px;
   left: 20px;
 }
 .signup {
@@ -30,8 +30,7 @@ form .button {
   height: 53px;
   border-radius: 15px;
   background: var(--Secondry-color, #8bf349);
-  color: var(--Terinary-color, #F1FFE9);
-  
+  color: var(--Terinary-color, #f1ffe9);
 }
 
 form div input {
@@ -45,4 +44,7 @@ form div input {
 }
 form div input::placeholder {
   color: var(--Primary-color, #06555a);
+}
+.tooltip {
+  font-size: 14px !important;
 }
