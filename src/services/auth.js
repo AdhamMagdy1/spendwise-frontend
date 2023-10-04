@@ -3,7 +3,7 @@ import { useState } from 'react';
 
 // Create a custom hook for managing authentication
 export function useAuth() {
-  const [isAuthenticated, setIsAuthenticated] = useState(false);
+  const [isAuthenticated, setIsAuthenticated] = useState(true);
 
   // Function to handle user login
   const login = () => {
