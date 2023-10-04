@@ -1,36 +1,27 @@
 import React from 'react';
-import logo from './logo.svg';
-import './assets/styles/App.css';
-import { BrowserRouter as Router, Routes, Route, Link } from 'react-router-dom';
+import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
 
 import Signup from './pages/Signup';
 import Login from './pages/Login';
+import Home from './pages/Home';
+import Dashboard from './pages/Dashboard';
+import { useAuth } from './services/auth'; // Import the useAuth hook
 
 function App() {
+  const { isAuthenticated } = useAuth(); // Use the useAuth hook to get authentication status
+
   return (
     <Router>
-      <div className="App">
-        <img src={logo} className="App-logo" alt="logo" />
-        <header className="App-header">
-          <h1 className="H1 LogoText">SpendWise</h1>
-          <p className="P">
-            "Empowering Budgets,
-            <br /> Simplifying Savings!"
-          </p>
-        </header>
-        <div className="actionButtons">
-          <Link to="/signup">
-            <button className="signup H2">Create Account</button>
-          </Link>
-          <Link to="/login">
-            <button className="login H2">Login to Account</button>
-          </Link>
-        </div>
-      </div>
-
       <Routes>
         <Route path="/signup" element={<Signup />} />
         <Route path="/login" element={<Login />} />
+        <Route path="/" element={<Navigate to="/home" />} />
+        <Route path="/home" element={<Home />} />
+        <Route
+          path="/dashboard"
+          element={isAuthenticated ? <Dashboard /> : <Navigate to="/login" />}
+        />
+        <Route path="*" element={<Navigate to="/home" />} />
       </Routes>
     </Router>
   );
