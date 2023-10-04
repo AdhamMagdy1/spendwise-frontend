@@ -10,18 +10,30 @@ function Login() {
   };
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const [showPasswordTooltip, setShowPasswordTooltip] = useState(false);
 
   const handleSubmit = (event) => {
     event.preventDefault();
 
     // Validate the form data
-    if (!email || !password) {
+    if (!email || !password || password.length < 6) {
+      // Display the tooltip for the password field
+      setShowPasswordTooltip(true);
       return;
     }
     // Send the form data to the backend server
     // ...
     // After successful Login, navigate to the home page
     navigate('/dashboard');
+  };
+  const handlePasswordChange = (event) => {
+    // Check if the password has reached 6 characters or more
+    if (event.target.value.length >= 6) {
+      // Hide the password tooltip
+      setShowPasswordTooltip(false);
+    }
+    // Update the password state
+    setPassword(event.target.value);
   };
   return (
     <div className="signup">
@@ -46,8 +58,13 @@ function Login() {
             type="password"
             name="password"
             placeholder="Password"
-            onChange={(event) => setPassword(event.target.value)}
+            onChange={handlePasswordChange}
           />
+          {showPasswordTooltip && (
+            <div className="tooltip P" style={{ color: 'red' }}>
+              Password must be at least 6 characters
+            </div>
+          )}
         </div>
 
         <input className="H3 button" type="submit" value="Login" />
