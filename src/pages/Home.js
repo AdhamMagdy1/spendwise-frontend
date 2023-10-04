@@ -17,10 +17,10 @@ function Home() {
         </header>
         <div className="actionButtons">
           <Link to="/signup">
-            <button className="signup H2">Create Account</button>
+            <button className="signup H3">Create Account</button>
           </Link>
           <Link to="/login">
-            <button className="login H2">Login to Account</button>
+            <button className="login H3">Login to Account</button>
           </Link>
         </div>
       </div>

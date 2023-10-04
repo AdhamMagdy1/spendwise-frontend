@@ -13,8 +13,10 @@
   --Terinary-color: #f1ffe9;
   --lite-color: #d6ffbc;
 }
-body{
+
+body {
   background-color: var(--Terinary-color);
+  overflow: hidden;
 }
 .H1 {
   font-family: 'Poppins', sans-serif;
@@ -61,4 +63,10 @@ a {
   color: inherit; /* Inherit text color */
   cursor: pointer; /* Change cursor to pointer on hover (optional) */
   /* You can further style your links as needed */
+}
+input:focus {
+  outline: none;
+}
+input{
+  border: none;
 }
