@@ -13,6 +13,9 @@
   --Terinary-color: #f1ffe9;
   --lite-color: #d6ffbc;
 }
+body{
+  background-color: var(--Terinary-color);
+}
 .H1 {
   font-family: 'Poppins', sans-serif;
   font-size: 36px;

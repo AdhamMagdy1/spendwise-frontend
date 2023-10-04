@@ -1,0 +1,9 @@
+.footer{
+    text-align: center;
+    font-size: 12px;
+    font-family: 'Poppins', sans-serif;
+    color: var(--Primary-color);
+}
+.footer a{
+    color: var(--Secondry-color)
+}
