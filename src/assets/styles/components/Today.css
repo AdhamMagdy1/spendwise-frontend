@@ -1,4 +1,81 @@
 .container {
-  /* width: 100%;
-    height: 80%; */
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  flex-direction: column;
+  gap: 10px;
+}
+.records-list {
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  flex-direction: column;
+  overflow-y: scroll;
+  width: 100%;
+  height: 65%;
+  gap: 5px;
+}
+.record {
+  display: flex;
+  align-items: center;
+  justify-content: space-evenly;
+  color: var(--Primary-color);
+  width: 95%;
+  font-family: 'Cairo', 'Poppins', sans-serif;
+  font-weight: 500;
+  border-bottom: 1px solid var(--Secondry-color);
+}
+.total-price {
+  width: 90%;
+}
+.total-price p {
+  text-align: left !important;
+  color: var(--Primary-color);
+}
+.total-price span {
+  color: var(--Secondry-color);
+}
+.actions button {
+  background-color: var(--Terinary-color);
+}
+.tags {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-direction: column;
+  gap: 1px;
+}
+.tags p {
+  color: var(--Terinary-color);
+  font-family: Poppins;
+  font-size: 12px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: normal;
+  text-align: center;
+}
+.tags .t1 {
+  width: 65px;
+  height: 18px;
+  flex-shrink: 0;
+  border-radius: 30px;
+  background: var(--Primary-color);
+}
+.tags .t2 {
+  width: 65px;
+  height: 18px;
+  flex-shrink: 0;
+  border-radius: 30px;
+  background: var(--Secondry-color);
+}
+.addItmeBtn {
+  width: 250px;
+  height: 53px;
+  flex-shrink: 0;
+  border-radius: 15px;
+  background: var(--Secondry-color);
+  color: var(--Terinary-color, #f1ffe9);
+  text-align: center;
+  margin-top: 25px;
 }
