@@ -17,7 +17,8 @@
 
 body {
   background-color: var(--Terinary-color);
-  overflow: hidden;
+  overflow-x: hidden;
+  overflow-y: scroll;
 }
 .H1 {
   font-family: 'Poppins', sans-serif;

@@ -13,7 +13,7 @@
   flex-direction: column;
   overflow-y: scroll;
   width: 100%;
-  height: 65%;
+  max-height: 45%;
   gap: 5px;
 }
 .record {
@@ -25,6 +25,11 @@
   font-family: 'Cairo', 'Poppins', sans-serif;
   font-weight: 500;
   border-bottom: 1px solid var(--Secondry-color);
+}
+.record p{
+  width: 98px;
+  overflow: scroll;
+  height: 50px;
 }
 .total-price {
   width: 90%;
@@ -77,5 +82,4 @@
   background: var(--Secondry-color);
   color: var(--Terinary-color, #f1ffe9);
   text-align: center;
-  margin-top: 25px;
 }

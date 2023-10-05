@@ -19,6 +19,94 @@ function Today() {
         price: 10,
         primaryTag: 'Shopping',
         secondaryTag: 'Milk',
+        _id: '651e95e503da9fc5a78fd8b0',
+      },
+      {
+        date: '2023-04-10T14:00:00.000Z',
+        product: 'تفاح',
+        price: 10,
+        primaryTag: 'Shopping',
+        secondaryTag: 'Milk',
+        _id: '651e95e503da9fc5a78fd8b0',
+      },
+      {
+        date: '2023-04-10T14:00:00.000Z',
+        product: 'تفاح',
+        price: 10,
+        primaryTag: 'Shopping',
+        secondaryTag: 'Milk',
+        _id: '651e95e503da9fc5a78fd8b0',
+      },
+      {
+        date: '2023-04-10T14:00:00.000Z',
+        product: 'تفاح',
+        price: 10,
+        primaryTag: 'Shopping',
+        secondaryTag: 'Milk',
+        _id: '651e95e503da9fc5a78fd8b0',
+      },
+      {
+        date: '2023-04-10T14:00:00.000Z',
+        product: 'تفاح',
+        price: 10,
+        primaryTag: 'Shopping',
+        secondaryTag: 'Milk',
+        _id: '651e95e503da9fc5a78fd8b0',
+      },
+      {
+        date: '2023-04-10T14:00:00.000Z',
+        product: 'تفاح',
+        price: 10,
+        primaryTag: 'Shopping',
+        secondaryTag: 'Milk',
+        _id: '651e95e503da9fc5a78fd8b0',
+      },
+      {
+        date: '2023-04-10T14:00:00.000Z',
+        product: 'تفاح',
+        price: 10,
+        primaryTag: 'Shopping',
+        secondaryTag: 'Milk',
+        _id: '651e95e503da9fc5a78fd8b0',
+      },
+      {
+        date: '2023-04-10T14:00:00.000Z',
+        product: 'تفاح',
+        price: 10,
+        primaryTag: 'Shopping',
+        secondaryTag: 'Milk',
+        _id: '651e95e503da9fc5a78fd8b0',
+      },
+      {
+        date: '2023-04-10T14:00:00.000Z',
+        product: 'تفاح',
+        price: 10,
+        primaryTag: 'Shopping',
+        secondaryTag: 'Milk',
+        _id: '651e95e503da9fc5a78fd8b0',
+      },
+      {
+        date: '2023-04-10T14:00:00.000Z',
+        product: 'تفاح',
+        price: 10,
+        primaryTag: 'Shopping',
+        secondaryTag: 'Milk',
+        _id: '651e95e503da9fc5a78fd8b0',
+      },
+      {
+        date: '2023-04-10T14:00:00.000Z',
+        product: 'تفاح',
+        price: 10,
+        primaryTag: 'Shopping',
+        secondaryTag: 'Milk',
+        _id: '651e95e503da9fc5a78fd8b0',
+      },
+      {
+        date: '2023-04-10T14:00:00.000Z',
+        product: 'تفاح',
+        price: 10,
+        primaryTag: 'Shopping',
+        secondaryTag: 'Milk',
         _id: '651e95e803da9fc5a78fd8b6',
       },
       {
@@ -61,33 +149,35 @@ function Today() {
 
   return (
     <div className="container">
-      <div className="records-list">
-        {data.spendingRecords.map((record) => (
-          <div className="record P" key={record._id}>
-            {/* Render record details */}
-            <p>{record.product}</p>
-            <p>${record.price}</p>
-            <div className="tags">
-              <p className="t1">{record.primaryTag}</p>
-              <p className="t2">{record.secondaryTag}</p>
+      <div className="view">
+        <div className="records-list">
+          {data.spendingRecords.map((record) => (
+            <div className="record P" key={record._id}>
+              {/* Render record details */}
+              <p>{record.product}</p>
+              <p>${record.price}</p>
+              <div className="tags">
+                <p className="t1">{record.primaryTag}</p>
+                <p className="t2">{record.secondaryTag}</p>
+              </div>
+              <div className="actions">
+                {' '}
+                <button>
+                  <img src={deleteImg} alt="delete" />
+                </button>
+                <button>
+                  <img src={editImg} alt="edit" />
+                </button>
+              </div>
             </div>
-            <div className="actions">
-              {' '}
-              <button>
-                <img src={deleteImg} alt="delete" />
-              </button>
-              <button>
-                <img src={editImg} alt="edit" />
-              </button>
-            </div>
-          </div>
-        ))}
-      </div>
-      {/* Render the total price */}
-      <div className="total-price H3">
-        <p>
-          Total Price: $<span>{total}</span>
-        </p>
+          ))}
+        </div>
+        {/* Render the total price */}
+        <div className="total-price H3">
+          <p>
+            Total Price: $<span>{total}</span>
+          </p>
+        </div>
       </div>
       <button className="addItmeBtn H3">Add Item</button>
     </div>

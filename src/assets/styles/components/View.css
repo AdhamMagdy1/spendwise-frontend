@@ -1,0 +1,20 @@
+.container {
+  height: 100vh;
+}
+.view {
+  width: 95%;
+}
+.records-list {
+  max-height: 50vh;
+}
+.datePick div {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+}
+.datePick p {
+  color: var(--Primary-color);
+}
+.datePick span {
+  color: var(--Secondry-color);
+}
