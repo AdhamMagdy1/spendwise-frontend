@@ -1,10 +1,11 @@
 import React, { useState } from 'react';
 import Chart from 'chart.js/auto';
-import { Line } from 'react-chartjs-2';
+import { Line, Pie } from 'react-chartjs-2';
 import '../assets/styles/components/Analytics.css';
 
 function Analytics() {
   Chart.defaults.font.family = 'Poppins';
+  Chart.defaults.color = '#06555a';
   const [startDate, setStartDate] = useState(getTodayDate());
   const [endDate, setEndDate] = useState(getTodayDate()); // Set initial value to today's date
   function getTodayDate() {
@@ -20,11 +21,11 @@ function Analytics() {
   const data = {
     spendingRecords: [
       {
-        date: '2023-04-01T14:00:00.000Z',
+        date: '2023-05-01T14:00:00.000Z',
         product: 'Appels and oranges and some groceries form the supermarket',
         price: 10,
         primaryTag: 'Shopping',
-        secondaryTag: 'Milk',
+        secondaryTag: 'Coffe',
         _id: '951e95e503da9fc5a78fd8b0',
       },
       {
@@ -32,7 +33,7 @@ function Analytics() {
         product: 'تفاح',
         price: 20,
         primaryTag: 'Shopping',
-        secondaryTag: 'Milk',
+        secondaryTag: 'Coffe',
         _id: '851e95e503da9fc5a78fd8b0',
       },
       {
@@ -47,15 +48,15 @@ function Analytics() {
         date: '2023-04-04T14:00:00.000Z',
         product: 'تفاح',
         price: 40,
-        primaryTag: 'Shopping',
-        secondaryTag: 'Milk',
+        primaryTag: 'College',
+        secondaryTag: 'Coffe',
         _id: '651e95e503da9fc5a78fd8b0',
       },
       {
         date: '2023-04-05T14:00:00.000Z',
         product: 'تفاح',
         price: 30,
-        primaryTag: 'Shopping',
+        primaryTag: 'College',
         secondaryTag: 'Milk',
         _id: '551e95e503da9fc5a78fd8b0',
       },
@@ -63,32 +64,32 @@ function Analytics() {
         date: '2023-04-06T14:00:00.000Z',
         product: 'تفاح',
         price: 20,
-        primaryTag: 'Shopping',
-        secondaryTag: 'Milk',
+        primaryTag: 'College',
+        secondaryTag: 'Vegetables',
         _id: '451e95e503da9fc5a78fd8b0',
       },
       {
         date: '2023-04-07T14:00:00.000Z',
         product: 'تفاح',
         price: 50,
-        primaryTag: 'Shopping',
-        secondaryTag: 'Milk',
+        primaryTag: 'College',
+        secondaryTag: 'Vegetables',
         _id: '351e95e503da9fc5a78fd8b0',
       },
       {
         date: '2023-04-08T14:00:00.000Z',
         product: 'تفاح',
         price: 100,
-        primaryTag: 'Shopping',
-        secondaryTag: 'Milk',
+        primaryTag: 'Bils',
+        secondaryTag: 'Vegetables',
         _id: '251e95e503da9fc5a78fd8b0',
       },
       {
         date: '2023-04-08T14:00:00.000Z',
         product: 'تفاح',
         price: 80,
-        primaryTag: 'Shopping',
-        secondaryTag: 'Milk',
+        primaryTag: 'Bils',
+        secondaryTag: 'Vegetables',
         _id: '151e95e503da9fc5a78fd8b0',
       },
     ],
@@ -129,8 +130,9 @@ function Analytics() {
         labels: {
           // This more specific font property overrides the global property
           font: {
+            color: 'blue',
             family: 'Poppins',
-            size: 16,
+            size: 14,
             weight: 'bold',
           },
         },
@@ -147,7 +149,7 @@ function Analytics() {
         ticks: {
           font: {
             family: 'Poppins',
-            size: 14,
+            size: 10,
             weight: 'normal',
           },
         },
@@ -172,6 +174,90 @@ function Analytics() {
     },
   };
 
+  const primaryTagPrices = {};
+  const secondaryTagPrices = {};
+
+  data.spendingRecords.forEach((record) => {
+    if (record.primaryTag) {
+      primaryTagPrices[record.primaryTag] =
+        (primaryTagPrices[record.primaryTag] || 0) + record.price;
+    }
+
+    if (record.secondaryTag) {
+      secondaryTagPrices[record.secondaryTag] =
+        (secondaryTagPrices[record.secondaryTag] || 0) + record.price;
+    }
+  });
+  const primaryTagData = {
+    labels: Object.keys(primaryTagPrices),
+    datasets: [
+      {
+        data: Object.values(primaryTagPrices),
+        backgroundColor: [
+          '#EAE509',
+          '#7DCE13',
+          '#5BB318',
+          '#2B7A0B',
+          '#A8DF8E',
+        ],
+        borderColor: '#f1ffe9',
+      },
+    ],
+  };
+
+  const secondaryTagData = {
+    labels: Object.keys(secondaryTagPrices),
+    datasets: [
+      {
+        data: Object.values(secondaryTagPrices),
+        backgroundColor: [
+          '#EAE509',
+          '#7DCE13',
+          '#5BB318',
+          '#2B7A0B',
+          '#A8DF8E',
+        ],
+        borderColor: '#f1ffe9',
+      },
+    ],
+  };
+
+  const primaryPieChartOptions = {
+    plugins: {
+      title: {
+        display: true,
+        text: 'Spendings by primary tags',
+        color: '#06555a',
+        position: 'top',
+        align: 'center',
+        font: {
+          family: 'Poppins',
+          size: 14,
+          weight: 'bold',
+        },
+        padding: 8,
+        fullSize: true,
+      },
+    },
+  };
+  const secondaryPieChartOptions = {
+    plugins: {
+      title: {
+        display: true,
+        text: 'Spendings by secondary tags',
+        color: '#06555a',
+        position: 'top',
+        align: 'center',
+        font: {
+          family: 'Poppins',
+          size: 14,
+          weight: 'bold',
+        },
+        padding: 8,
+        fullSize: true,
+      },
+    },
+  };
   return (
     <div className="container">
       <div className="datePick H3">
@@ -202,7 +288,10 @@ function Analytics() {
         <Line data={chartData} options={chartOptions} />
       </div>
       <div className="chart-container">
-        <Line data={chartData} options={chartOptions} />
+        <Pie data={primaryTagData} options={primaryPieChartOptions} />
+      </div>
+      <div className="chart-container">
+        <Pie data={secondaryTagData} options={secondaryPieChartOptions} />
       </div>
     </div>
   );

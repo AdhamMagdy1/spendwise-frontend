@@ -27,9 +27,9 @@
   border-bottom: 1px solid var(--Secondry-color);
 }
 .record p {
-  overflow: auto;
-  max-width: 100px;
-  max-height: 50px;
+  overflow-x:hidden ;
+  width: 95px;
+  height: 35px;
 }
 .total-price {
   width: 90%;
