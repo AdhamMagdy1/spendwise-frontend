@@ -8,6 +8,21 @@
   user-select: none;
   -webkit-tap-highlight-color: transparent;
 }
+/* width */
+::-webkit-scrollbar {
+  max-width: 6px;
+}
+
+/* Track */
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+/* Handle */
+::-webkit-scrollbar-thumb {
+  background: var(--Secondry-color);
+  border-radius: 15px;
+}
 :root {
   --Primary-color: #06555a;
   --Secondry-color: #8bf349;
@@ -20,6 +35,7 @@ body {
   overflow-x: hidden;
   overflow-y: scroll;
 }
+
 .H1 {
   font-family: 'Poppins', sans-serif;
   font-size: 36px;
@@ -69,6 +85,6 @@ a {
 input:focus {
   outline: none;
 }
-input{
+input {
   border: none;
 }

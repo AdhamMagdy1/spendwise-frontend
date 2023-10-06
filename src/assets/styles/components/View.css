@@ -1,3 +1,9 @@
+::-webkit-datetime-edit-year-field {
+  color: var(--Secondry-color);
+}
+::-webkit-calendar-picker-indicator {
+  color: var(--Secondry-color);
+}
 .container {
   height: 100vh;
 }
@@ -11,6 +17,10 @@
   display: flex;
   align-items: flex-start;
   justify-content: space-between;
+}
+.datePick div input {
+  background-color: transparent;
+  color: var(--Secondry-color);
 }
 .datePick p {
   color: var(--Primary-color);

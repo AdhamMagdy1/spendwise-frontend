@@ -12,15 +12,15 @@ function View() {
     const day = String(today.getDate()).padStart(2, '0');
     return `${year}-${day}-${month}`;
   }
-  function getJoinedDate(){
-    return '2023-01-10'
+  function getJoinedDate() {
+    return '2023-01-10';
   }
 
   const data = {
     spendingRecords: [
       {
         date: '2023-04-10T14:00:00.000Z',
-        product: 'تفاح',
+        product: 'Appels and oranges and some groceries form the supermarket',
         price: 10,
         primaryTag: 'Shopping',
         secondaryTag: 'Milk',
@@ -108,6 +108,7 @@ function View() {
         <div>
           <p>From:</p>
           <input
+            className="H3"
             type="date"
             value={startDate}
             min={getJoinedDate()}
@@ -118,6 +119,7 @@ function View() {
         <div>
           <p>To:</p>
           <input
+            className="H3"
             type="date"
             value={endDate}
             min={getJoinedDate()}
