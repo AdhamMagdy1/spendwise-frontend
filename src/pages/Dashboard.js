@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import Swal from 'sweetalert2';
 import { useNavigate } from 'react-router-dom';
 import logoutImg from '../assets/images/logout.svg';
 import edit from '../assets/images/edit.svg';
@@ -13,6 +14,45 @@ function Dashboard() {
     //add the logout function!!
     navigate('/home');
   };
+
+  const [budget, setBudget] = useState(0);
+  const getUserInput = async () => {
+    let userInputValue; // Declare a new variable to store the computed user input
+    const { value } = await Swal.fire({
+      title: 'Budget:',
+      input: 'number',
+      inputLabel: 'Enter Your Current Budget',
+      inputPlaceholder: 'Budget',
+      showCancelButton: true,
+      confirmButtonColor: '#8bf349',
+      color: '#06555a',
+      preConfirm: (inputValue) => {
+        userInputValue = inputValue; // Assign the input value to the new variable
+
+        // Check if the budget input has a value
+        if (!userInputValue) {
+          // If not, show an error message and prevent the confirm button from being enabled
+          Swal.showValidationMessage('Please enter a budget value.');
+          return false;
+        }
+
+        // Otherwise, return the budget value
+        return userInputValue;
+      },
+    });
+
+    if (value) {
+      setBudget(value); // Update the state with user input
+      Swal.fire({
+        title: 'Success',
+        icon: 'success',
+        text: `Your budget: ${value}`,
+        confirmButtonColor: '#8bf349',
+        color: '#06555a',
+      });
+    }
+  };
+
   // Create state to track the active button
   const [activeButton, setActiveButton] = useState('Today');
 
@@ -48,10 +88,10 @@ function Dashboard() {
         <div className="text">
           <h1 className="H1">Hello Adham,</h1>
           <h2 className="H2">
-            Your Budget: <br /> <span>3000,00 EGP</span>{' '}
+            Your Budget: <br /> <span>${budget}</span>
           </h2>
         </div>
-        <div className="edit P">
+        <div className="edit P" onClick={getUserInput}>
           Edit <img src={edit} alt="edit" />
         </div>
       </div>

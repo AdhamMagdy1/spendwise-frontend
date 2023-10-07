@@ -103,7 +103,7 @@ function View() {
   }
 
   return (
-    <div className="container">
+    <div className="contnet">
       <div className="datePick H3">
         <div>
           <p>From:</p>

@@ -1,10 +1,11 @@
 .dashboard {
   display: flex;
   align-items: center;
-  /* justify-content: center; */
+  justify-content: center;
   flex-direction: column;
   width: 100%;
   height: 100vh;
+  background-color: var(--Terinary-color);
 }
 .logout {
   position: absolute;
@@ -34,8 +35,8 @@
   align-items: center;
   justify-content: center;
 }
-.dashboard-navbar{
-    margin: 20px 0px;
+.dashboard-navbar {
+  margin: 20px 0px;
 }
 
 .dashboard-button {
@@ -60,10 +61,11 @@
 }
 
 .dashboard-button:hover {
-    background-color: var(--Primary-color);
-    color: var(--Terinary-color, #f1ffe9);
+  background-color: var(--Primary-color);
+  color: var(--Terinary-color, #f1ffe9);
 }
 .dashboard-button.active {
   background-color: var(--Primary-color);
   color: var(--Terinary-color, #f1ffe9);
 }
+

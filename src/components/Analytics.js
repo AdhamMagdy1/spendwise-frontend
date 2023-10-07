@@ -1,9 +1,11 @@
 import React, { useState } from 'react';
 import Chart from 'chart.js/auto';
 import { Line, Pie } from 'react-chartjs-2';
+import ChartDeferred from 'chartjs-plugin-deferred';
 import '../assets/styles/components/Analytics.css';
 
 function Analytics() {
+  Chart.register(ChartDeferred);
   Chart.defaults.font.family = 'Poppins';
   Chart.defaults.color = '#06555a';
   const [startDate, setStartDate] = useState(getTodayDate());
@@ -125,6 +127,7 @@ function Analytics() {
 
   // Customize Chart.js options
   const chartOptions = {
+    // maintainAspectRatio: false,
     plugins: {
       legend: {
         labels: {
@@ -223,6 +226,7 @@ function Analytics() {
   };
 
   const primaryPieChartOptions = {
+    // maintainAspectRatio: false,
     plugins: {
       title: {
         display: true,
@@ -241,6 +245,7 @@ function Analytics() {
     },
   };
   const secondaryPieChartOptions = {
+    // maintainAspectRatio: false,
     plugins: {
       title: {
         display: true,
@@ -259,7 +264,7 @@ function Analytics() {
     },
   };
   return (
-    <div className="container">
+    <div className="All">
       <div className="datePick H3">
         <div>
           <p>From:</p>
