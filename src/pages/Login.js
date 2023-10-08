@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import goback from '../assets/images/goback.svg';
+import { loginUser } from '../services/userApi';
 import '../assets/styles/Auth.css';
 
 function Login() {
@@ -22,9 +23,7 @@ function Login() {
       return;
     }
     // Send the form data to the backend server
-    // ...
-    // After successful Login, navigate to the home page
-    navigate('/dashboard');
+    loginUser(email, password);
   };
   const handlePasswordChange = (event) => {
     // Check if the password has reached 6 characters or more

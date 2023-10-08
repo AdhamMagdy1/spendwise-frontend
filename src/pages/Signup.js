@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import goback from '../assets/images/goback.svg';
 import '../assets/styles/Auth.css';
-
+import { registerUser } from '../services/userApi';
 function Signup() {
   const navigate = useNavigate();
   const goBack = () => {
@@ -22,10 +22,7 @@ function Signup() {
       setShowPasswordTooltip(true);
       return;
     }
-    // Send the form data to the backend server
-    // ...
-    // After successful signup, navigate to the home page
-    navigate('/dashboard');
+    registerUser(name, email, password);
   };
 
   const handlePasswordChange = (event) => {

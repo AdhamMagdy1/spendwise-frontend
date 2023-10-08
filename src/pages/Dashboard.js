@@ -1,21 +1,38 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import Swal from 'sweetalert2';
 import { useNavigate } from 'react-router-dom';
 import logoutImg from '../assets/images/logout.svg';
 import edit from '../assets/images/edit.svg';
 import '../assets/styles/Dashboard.css';
-
+import { logOut, getBudget, setBudget } from '../services/userApi';
 import Today from '../components/Today';
 import View from '../components/View';
 import Analytics from '../components/Analytics';
 function Dashboard() {
   const navigate = useNavigate();
-  const logout = () => {
+  const logoutUser = () => {
     //add the logout function!!
+    logOut();
     navigate('/home');
   };
 
-  const [budget, setBudget] = useState(0);
+  const [budget, setUserBudget] = useState(null); // Initialize as null
+
+  const fetchBudget = async () => {
+    try {
+      const response = await getBudget(); // Call the getBudget function
+      setUserBudget(response); // Set the budget state with the response
+    } catch (error) {
+      // Handle errors here, for example, redirect to the login page
+      navigate('/');
+    }
+  };
+
+  useEffect(() => {
+    // Fetch the budget when the component mounts
+    fetchBudget();
+  },[]);
+
   const getUserInput = async () => {
     let userInputValue; // Declare a new variable to store the computed user input
     const { value } = await Swal.fire({
@@ -42,7 +59,9 @@ function Dashboard() {
     });
 
     if (value) {
-      setBudget(value); // Update the state with user input
+      // Update the state with user input
+      const newValue = await setBudget(value);
+      setUserBudget(newValue);
       Swal.fire({
         title: 'Success',
         icon: 'success',
@@ -81,7 +100,7 @@ function Dashboard() {
   };
   return (
     <div className="dashboard">
-      <div className="logout P" onClick={logout}>
+      <div className="logout P" onClick={logoutUser}>
         logout <img src={logoutImg} alt="logout" />
       </div>
       <div className="header">
