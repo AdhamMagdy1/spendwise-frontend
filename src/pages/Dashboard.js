@@ -24,6 +24,7 @@ function Dashboard() {
       setUserBudget(response); // Set the budget state with the response
     } catch (error) {
       // Handle errors here, for example, redirect to the login page
+      logOut();
       navigate('/');
     }
   };
@@ -31,7 +32,7 @@ function Dashboard() {
   useEffect(() => {
     // Fetch the budget when the component mounts
     fetchBudget();
-  },[]);
+  }, []);
 
   const getUserInput = async () => {
     let userInputValue; // Declare a new variable to store the computed user input

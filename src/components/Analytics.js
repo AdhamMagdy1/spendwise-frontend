@@ -289,14 +289,16 @@ function Analytics() {
           />
         </div>
       </div>
-      <div className="chart-container">
-        <Line data={chartData} options={chartOptions} />
-      </div>
-      <div className="chart-container">
-        <Pie data={primaryTagData} options={primaryPieChartOptions} />
-      </div>
-      <div className="chart-container">
-        <Pie data={secondaryTagData} options={secondaryPieChartOptions} />
+      <div className="charts">
+        <div className="chart-container">
+          <Line data={chartData} options={chartOptions} />
+        </div>
+        <div className="chart-container">
+          <Pie data={primaryTagData} options={primaryPieChartOptions} />
+        </div>
+        <div className="chart-container">
+          <Pie data={secondaryTagData} options={secondaryPieChartOptions} />
+        </div>
       </div>
     </div>
   );

@@ -1,6 +1,7 @@
 import Swal from 'sweetalert2';
 // Define the API endpoint URL
-const baseUrl = 'http://localhost:3000/api';
+const baseUrl = process.env.REACT_APP_API_URL;;
+console.log(`Base URL: ${baseUrl}`);
 
 // Function to register a new user
 export const registerUser = async (name, email, password) => {
