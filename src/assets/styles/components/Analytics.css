@@ -4,14 +4,16 @@
   justify-content: flex-start;
   flex-direction: column;
   width: 100%;
-  height: 60vh;
-  /* gap: 50px; */
+  height: 100vh;
+  overflow-y: scroll;
+  overflow-x: hidden;
+  gap: 50px;
 }
 .chart-container {
   display: grid;
   gap: 1em;
   grid-template-rows: min-content minmax(0, 1fr) min-content;
-  height: calc(60vh - 2em);
+  /* height: calc(50vh - 2em); */
   width: calc(100vw - 2em); /* not necessary, but just to be explicit */
   margin: 1em;
   align-items: center;

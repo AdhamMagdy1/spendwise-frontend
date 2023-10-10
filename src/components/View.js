@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import '../assets/styles/components/View.css';
 
 function View() {
-  const joinDate = window.localStorage.getItem('joinDate')
+  const joinDate = window.localStorage.getItem('joinDate');
   const [startDate, setStartDate] = useState(joinDate);
   const [endDate, setEndDate] = useState(getTodayDate()); // Set initial value to today's date
 
@@ -95,9 +95,13 @@ function View() {
     return accumulator + record.price;
   }, 0);
   function formatDate(dateString) {
-    const options = { year: 'numeric', month: '2-digit', day: '2-digit' };
-    return new Date(dateString).toLocaleDateString(undefined, options);
+    const date = new Date(dateString);
+    const day = String(date.getDate()).padStart(2, '0');
+    const month = String(date.getMonth() + 1).padStart(2, '0'); // Add 1 to month because it's zero-indexed
+    const year = date.getFullYear();
+    return `${day}/${month}/${year}`;
   }
+  
 
   return (
     <div className="contnet">
