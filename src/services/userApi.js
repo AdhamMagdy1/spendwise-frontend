@@ -1,7 +1,6 @@
 import Swal from 'sweetalert2';
 // Define the API endpoint URL
-const baseUrl = process.env.REACT_APP_API_URL;;
-console.log(`Base URL: ${baseUrl}`);
+const baseUrl = process.env.REACT_APP_API_URL;
 
 // Function to register a new user
 export const registerUser = async (name, email, password) => {
@@ -28,7 +27,8 @@ export const registerUser = async (name, email, password) => {
     Swal.fire({
       title: 'Signedup successfully',
       icon: 'success',
-      confirmButtonColor: '#d33',
+      confirmButtonColor: '#8bf349',
+      color: '#06555a',
     }).then((result) => {
       if (result.isConfirmed) {
         window.location.href = './login';
@@ -42,7 +42,8 @@ export const registerUser = async (name, email, password) => {
       title: 'Error',
       icon: 'error',
       text: errorMessage,
-      confirmButtonColor: '#d33',
+      confirmButtonColor: '#8bf349',
+      color: '#06555a',
     });
   }
 };
@@ -77,12 +78,13 @@ export const loginUser = async (email, password) => {
       title: 'Error',
       icon: 'error',
       text: errorMessage,
-      confirmButtonColor: '#d33',
+      confirmButtonColor: '#8bf349',
+      color: '#06555a',
     });
   }
 };
 
-// Function to login  user
+// Function to get  userbudget
 export const getBudget = async () => {
   const endpoint = '/user/budget/current';
   const url = baseUrl + endpoint;
@@ -108,7 +110,8 @@ export const getBudget = async () => {
       title: 'Error',
       icon: 'error',
       text: errorMessage,
-      confirmButtonColor: '#d33',
+      confirmButtonColor: '#8bf349',
+      color: '#06555a',
     });
   }
 };
@@ -142,10 +145,42 @@ export const setBudget = async (budget) => {
       title: 'Error',
       icon: 'error',
       text: errorMessage,
-      confirmButtonColor: 'red',
+      confirmButtonColor: '#8bf349',
+      color: '#06555a',
     });
   }
 };
 export const logOut = () => {
   window.localStorage.clear();
+};
+
+export const getJoinDate = async () => {
+  const endpoint = '/user/joinDate';
+  const url = baseUrl + endpoint;
+  const token = window.localStorage.getItem('token');
+
+  const response = await fetch(url, {
+    method: 'GET', // Change the method to GET
+    headers: {
+      Authorization: `${token}`, // Add the authorization header with the token
+    },
+  });
+
+  if (response.ok) {
+    const responseData = await response.json();
+    console.log(responseData);
+    return responseData.joinDate;
+  } else {
+    console.log(response.json());
+    // Status code is not OK
+    const errorMessage = response.statusText; // Use response.statusText for error message
+
+    Swal.fire({
+      title: 'Error',
+      icon: 'error',
+      text: errorMessage,
+      confirmButtonColor: '#8bf349',
+      color: '#06555a',
+    });
+  }
 };

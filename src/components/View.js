@@ -1,9 +1,10 @@
 import React, { useState } from 'react';
+import { getJoinDate} from '../services/userApi'
 import '../assets/styles/components/View.css';
 
 function View() {
   const [startDate, setStartDate] = useState(getTodayDate());
-  const [endDate, setEndDate] = useState(getTodayDate()); // Set initial value to today's date
+  const [endDate, setEndDate] = useState(getJoinDate()); // Set initial value to today's date
 
   function getTodayDate() {
     const today = new Date();
@@ -11,9 +12,6 @@ function View() {
     const month = String(today.getMonth() + 1).padStart(2, '0'); // Add 1 to month because it's zero-indexed
     const day = String(today.getDate()).padStart(2, '0');
     return `${year}-${day}-${month}`;
-  }
-  function getJoinedDate() {
-    return '2023-01-10';
   }
 
   const data = {
@@ -111,7 +109,7 @@ function View() {
             className="H3"
             type="date"
             value={startDate}
-            min={getJoinedDate()}
+            min={getJoinDate()}
             max={getTodayDate()}
             onChange={(e) => setStartDate(e.target.value)}
           />
@@ -122,7 +120,7 @@ function View() {
             className="H3"
             type="date"
             value={endDate}
-            min={getJoinedDate()}
+            min={getJoinDate()}
             max={getTodayDate()}
             onChange={(e) => setEndDate(e.target.value)}
           />
