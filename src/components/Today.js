@@ -1,88 +1,34 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import Swal from 'sweetalert2';
 import '../assets/styles/components/Today.css';
 import deleteImg from '../assets/images/delete.svg';
 import editImg from '../assets/images/edit.svg';
+import { getSpendingInRange } from '../services/spendingApi';
+import { createNewSpending } from '../services/spendingApi';
 function Today() {
-  const data = {
-    spendingRecords: [
-      {
-        date: '2023-04-01T14:00:00.000Z',
-        product: 'Appels and oranges and some groceries form the supermarket',
-        price: 10,
-        primaryTag: 'Shopping',
-        secondaryTag: 'Milk',
-        _id: '951e95e503da9fc5a78fd8b0',
-      },
-      {
-        date: '2023-04-02T14:00:00.000Z',
-        product: 'تفاح',
-        price: 20,
-        primaryTag: 'Shopping',
-        secondaryTag: 'Milk',
-        _id: '851e95e503da9fc5a78fd8b0',
-      },
-      {
-        date: '2023-04-03T14:00:00.000Z',
-        product: 'تفاح',
-        price: 30,
-        primaryTag: 'Shopping',
-        secondaryTag: 'Milk',
-        _id: '751e95e503da9fc5a78fd8b0',
-      },
-      {
-        date: '2023-04-04T14:00:00.000Z',
-        product: 'تفاح',
-        price: 40,
-        primaryTag: 'Shopping',
-        secondaryTag: 'Milk',
-        _id: '651e95e503da9fc5a78fd8b0',
-      },
-      {
-        date: '2023-04-05T14:00:00.000Z',
-        product: 'تفاح',
-        price: 30,
-        primaryTag: 'Shopping',
-        secondaryTag: 'Milk',
-        _id: '551e95e503da9fc5a78fd8b0',
-      },
-      {
-        date: '2023-04-06T14:00:00.000Z',
-        product: 'تفاح',
-        price: 20,
-        primaryTag: 'Shopping',
-        secondaryTag: 'Milk',
-        _id: '451e95e503da9fc5a78fd8b0',
-      },
-      {
-        date: '2023-04-07T14:00:00.000Z',
-        product: 'تفاح',
-        price: 50,
-        primaryTag: 'Shopping',
-        secondaryTag: 'Milk',
-        _id: '351e95e503da9fc5a78fd8b0',
-      },
-      {
-        date: '2023-04-08T14:00:00.000Z',
-        product: 'تفاح',
-        price: 100,
-        primaryTag: 'Shopping',
-        secondaryTag: 'Milk',
-        _id: '251e95e503da9fc5a78fd8b0',
-      },
-      {
-        date: '2023-04-08T14:00:00.000Z',
-        product: 'تفاح',
-        price: 80,
-        primaryTag: 'Shopping',
-        secondaryTag: 'Milk',
-        _id: '151e95e503da9fc5a78fd8b0',
-      },
-    ],
+  const today = new Date();
+  const isoDate = today.toISOString();
+  console.log(isoDate);
+  const [data, setData] = useState({ spendingRecords: [] }); // Initialize with an empty array
+
+  const getData = async (startDate, endDate) => {
+    try {
+      const spendingData = await getSpendingInRange(startDate, endDate);
+      // console.log(spendingData)
+      setData(spendingData); // Set the data or initialize with an empty array
+    } catch (error) {
+      console.error(error);
+    }
   };
-  const total = data.spendingRecords.reduce((accumulator, record) => {
-    return accumulator + record.price;
-  }, 0);
+  useEffect(() => {
+    getData(isoDate, isoDate);
+    console.log('data received');
+  }, []);
+
+  const addToSpending = async (date, values) => {
+    await createNewSpending(date, values);
+  };
+
   const addItem = async () => {
     let formValues; // Declare a new variable to store the computed form values
     const { value } = await Swal.fire({
@@ -122,12 +68,7 @@ function Today() {
     });
 
     if (value) {
-      Swal.fire({
-        title: 'Added successfully!',
-        icon: 'success',
-        confirmButtonColor: '#8bf349',
-        color: '#06555a',
-      });
+      addToSpending(isoDate, formValues);
     }
   };
 
@@ -197,38 +138,45 @@ function Today() {
       });
     }
   };
+  const total = data.spendingRecords.reduce((acc, record) => {
+    return acc + record.price;
+  }, 0);
   return (
     <div className="container">
       <div className="view">
         <div className="records-list">
-          {data.spendingRecords.map((record) => (
-            <div className="record P" key={record._id}>
-              {/* Render record details */}
-              <p>{record.product}</p>
-              <p>${record.price}</p>
-              <div className="tags">
-                <p className="t1">{record.primaryTag}</p>
-                <p className="t2">{record.secondaryTag}</p>
+          {data.spendingRecords.length === 0 ? (
+            <p>No spending records found.</p>
+          ) : (
+            data.spendingRecords.map((record) => (
+              <div className="record P" key={record._id}>
+                {/* Render record details */}
+                <p>{record.product}</p>
+                <p>${record.price}</p>
+                <div className="tags">
+                  <p className="t1">{record.primaryTag}</p>
+                  <p className="t2">{record.secondaryTag}</p>
+                </div>
+                <div className="actions">
+                  <button onClick={() => deleteItem(record._id)}>
+                    <img src={deleteImg} alt="delete" />
+                  </button>
+                  <button
+                    onClick={() =>
+                      editItem(
+                        record.product,
+                        record.price,
+                        record.primaryTag,
+                        record.secondaryTag
+                      )
+                    }
+                  >
+                    <img src={editImg} alt="edit" />
+                  </button>
+                </div>
               </div>
-              <div className="actions">
-                <button onClick={() => deleteItem(record._id)}>
-                  <img src={deleteImg} alt="delete" />
-                </button>
-                <button
-                  onClick={() =>
-                    editItem(
-                      record.product,
-                      record.price,
-                      record.primaryTag,
-                      record.secondaryTag
-                    )
-                  }
-                >
-                  <img src={editImg} alt="edit" />
-                </button>
-              </div>
-            </div>
-          ))}
+            ))
+          )}
         </div>
         {/* Render the total price */}
         <div className="total-price H3">

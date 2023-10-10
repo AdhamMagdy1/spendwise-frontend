@@ -150,7 +150,7 @@ export const getBudget = async () => {
     console.log(responseData);
     return responseData.currentBudget;
   } else {
-    console.log(registerUser.json());
+    console.log(response.json());
     // Status code is not OK
     const errorMessage = response.statusText; // Use response.statusText for error message
 

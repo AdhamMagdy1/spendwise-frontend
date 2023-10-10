@@ -32,6 +32,7 @@ function Dashboard() {
   useEffect(() => {
     // Fetch the budget when the component mounts
     fetchBudget();
+    console.log('budgets loaded');
   }, []);
 
   const getUserInput = async () => {
