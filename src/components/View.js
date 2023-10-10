@@ -1,10 +1,10 @@
-import React, { useState } from 'react';
-import { getJoinDate} from '../services/userApi'
+import React, { useState, useEffect } from 'react';
 import '../assets/styles/components/View.css';
 
 function View() {
-  const [startDate, setStartDate] = useState(getTodayDate());
-  const [endDate, setEndDate] = useState(getJoinDate()); // Set initial value to today's date
+  const joinDate = window.localStorage.getItem('joinDate')
+  const [startDate, setStartDate] = useState(joinDate);
+  const [endDate, setEndDate] = useState(getTodayDate()); // Set initial value to today's date
 
   function getTodayDate() {
     const today = new Date();
@@ -94,7 +94,6 @@ function View() {
   const total = data.spendingRecords.reduce((accumulator, record) => {
     return accumulator + record.price;
   }, 0);
-
   function formatDate(dateString) {
     const options = { year: 'numeric', month: '2-digit', day: '2-digit' };
     return new Date(dateString).toLocaleDateString(undefined, options);
@@ -109,7 +108,7 @@ function View() {
             className="H3"
             type="date"
             value={startDate}
-            min={getJoinDate()}
+            min={joinDate}
             max={getTodayDate()}
             onChange={(e) => setStartDate(e.target.value)}
           />
@@ -120,7 +119,7 @@ function View() {
             className="H3"
             type="date"
             value={endDate}
-            min={getJoinDate()}
+            min={startDate}
             max={getTodayDate()}
             onChange={(e) => setEndDate(e.target.value)}
           />
