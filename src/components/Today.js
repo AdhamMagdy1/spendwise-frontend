@@ -5,6 +5,8 @@ import deleteImg from '../assets/images/delete.svg';
 import editImg from '../assets/images/edit.svg';
 import { getSpendingInRange } from '../services/spendingApi';
 import { createNewSpending } from '../services/spendingApi';
+import { deleteSpending } from '../services/spendingApi';
+import { editSpending } from '../services/spendingApi';
 function Today() {
   const today = new Date();
   const isoDate = today.toISOString();
@@ -25,6 +27,9 @@ function Today() {
     console.log('data received');
   }, []);
 
+  const editAspeinding = async (id, date, values) => {
+    await editSpending(id, date, values);
+  };
   const addToSpending = async (date, values) => {
     await createNewSpending(date, values);
   };
@@ -83,16 +88,13 @@ function Today() {
       confirmButtonText: 'Yes, delete it!',
     }).then((result) => {
       if (result.isConfirmed) {
-        Swal.fire({
-          title: 'Deleted successfully!',
-          icon: 'success',
-          confirmButtonColor: '#8bf349',
-          color: '#06555a',
-        });
+        // If the user confirms the deletion, call the deleteSpending function
+        deleteSpending(id);
       }
     });
   };
-  const editItem = async (name, price, tag1, tag2) => {
+
+  const editItem = async (id, name, price, tag1, tag2) => {
     let formValues; // Declare a new variable to store the computed form values
     const { value } = await Swal.fire({
       title: 'edit Itme',
@@ -130,12 +132,7 @@ function Today() {
     });
 
     if (value) {
-      Swal.fire({
-        title: 'Eddited successfully!',
-        icon: 'success',
-        confirmButtonColor: '#8bf349',
-        color: '#06555a',
-      });
+      editAspeinding(id, isoDate, formValues);
     }
   };
   const total = data.spendingRecords.reduce((acc, record) => {
@@ -164,6 +161,7 @@ function Today() {
                   <button
                     onClick={() =>
                       editItem(
+                        record._id,
                         record.product,
                         record.price,
                         record.primaryTag,
