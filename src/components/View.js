@@ -1,5 +1,4 @@
 import React, { useState, useEffect } from 'react';
-import Swal from 'sweetalert2';
 import '../assets/styles/components/View.css';
 import { getSpendingInRange } from '../services/spendingApi';
 
@@ -47,20 +46,6 @@ function View() {
     return `${day}/${month}/${year}`;
   }
 
-  const showDatePicker = (fieldName, dateState) => {
-    Swal.fire({
-      title: `Select ${fieldName} Date`,
-      html: `
-        <input class="swal2-input" type="date" id="datepicker">
-      `,
-      confirmButtonColor: '#8bf349',
-      preConfirm: () => {
-        const selectedDate = document.getElementById('datepicker').value;
-        dateState(new Date(selectedDate));
-      },
-    });
-  };
-
   return (
     <div className="contnet">
       <div className="datePick H3">
@@ -68,18 +53,22 @@ function View() {
           <p>From:</p>
           <input
             className="H3"
-            type="text"
+            type="date"
             value={startDate.toISOString().split('T')[0]}
-            onClick={() => showDatePicker('From', setStartDate)}
+            min={joinDate}
+            max={getTodayDate()}
+            onChange={(e) => setStartDate(new Date(e.target.value))}
           />
         </div>
         <div>
           <p>To:</p>
           <input
             className="H3"
-            type="text"
+            type="date"
             value={endDate.toISOString().split('T')[0]}
-            onClick={() => showDatePicker('To', setEndDate)}
+            min={startDate.toISOString().split('T')[0]}
+            max={getTodayDate()}
+            onChange={(e) => setEndDate(new Date(e.target.value))}
           />
         </div>
       </div>
