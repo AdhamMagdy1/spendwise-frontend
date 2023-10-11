@@ -45,6 +45,9 @@ function View() {
     const year = date.getFullYear();
     return `${day}/${month}/${year}`;
   }
+  function isValidDate(date) {
+    return date instanceof Date && !isNaN(date);
+  }
 
   return (
     <div className="contnet">
@@ -57,7 +60,10 @@ function View() {
             value={startDate.toISOString().split('T')[0]}
             min={joinDate}
             max={getTodayDate()}
-            onChange={(e) => setStartDate(new Date(e.target.value))}
+            onChange={(e) => {
+              const selctedDate = new Date(e.target.value);
+              setStartDate(isValidDate(selctedDate) ? selctedDate : new Date());
+            }}
           />
         </div>
         <div>
@@ -68,7 +74,10 @@ function View() {
             value={endDate.toISOString().split('T')[0]}
             min={startDate.toISOString().split('T')[0]}
             max={getTodayDate()}
-            onChange={(e) => setEndDate(new Date(e.target.value))}
+            onChange={(e) => {
+              const selctedDate = new Date(e.target.value);
+              setEndDate(isValidDate(selctedDate) ? selctedDate : new Date());
+            }}
           />
         </div>
       </div>

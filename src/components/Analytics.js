@@ -10,19 +10,18 @@ function Analytics() {
   Chart.defaults.font.family = 'Poppins';
   Chart.defaults.color = '#06555a';
   const joinDate = window.localStorage.getItem('joinDate');
-  const [startDate, setStartDate] = useState(
-    new Date(joinDate).toISOString().split('T')[0]
-  );
-  const [endDate, setEndDate] = useState(
-    new Date(getTodayDate()).toISOString().split('T')[0]
-  );
+  const [startDate, setStartDate] = useState(new Date(joinDate));
+  const [endDate, setEndDate] = useState(new Date(getTodayDate()));
   const [data, setData] = useState({ spendingRecords: [] });
   const [isLoading, setIsLoading] = useState(true); // New loading state
 
   const getData = async (startDate, endDate) => {
     try {
-      const spendingData = await getSpendingInRange(startDate, endDate);
-      console.log(startDate, endDate);
+      const spendingData = await getSpendingInRange(
+        startDate.toISOString(),
+        endDate.toISOString()
+      );
+      console.log(startDate.toISOString(), endDate.toISOString());
       setData(spendingData);
       setIsLoading(false); // Data has been loaded
     } catch (error) {
@@ -44,10 +43,14 @@ function Analytics() {
   function formatDate(dateString) {
     const date = new Date(dateString);
     const day = String(date.getDate()).padStart(2, '0');
-    const month = String(date.getMonth() + 1).padStart(2, '0'); // Add 1 to month because it's zero-indexed
+    const month = String(date.getMonth() + 1).padStart(2, '0');
     const year = date.getFullYear();
     return `${day}/${month}/${year}`;
   }
+  function isValidDate(date) {
+    return date instanceof Date && !isNaN(date);
+  }
+
   const dateToPriceMap = {};
 
   data.spendingRecords.forEach((record) => {
@@ -210,32 +213,38 @@ function Analytics() {
       },
     },
   };
-
+  function isValidDate(date) {
+    return date instanceof Date && !isNaN(date);
+  }
   return (
     <div className="All">
       <div className="datePick H3">
         <div>
           <p>From:</p>
           <input
-            required
             className="H3"
             type="date"
-            value={startDate}
+            value={startDate.toISOString().split('T')[0]}
             min={joinDate}
             max={getTodayDate()}
-            onChange={(e) => setStartDate(e.target.value)}
+            onChange={(e) => {
+              const selctedDate = new Date(e.target.value);
+              setStartDate(isValidDate(selctedDate) ? selctedDate : new Date());
+            }}
           />
         </div>
         <div>
           <p>To:</p>
           <input
-            required
             className="H3"
             type="date"
-            value={endDate}
-            min={startDate}
+            value={endDate.toISOString().split('T')[0]}
+            min={startDate.toISOString().split('T')[0]}
             max={getTodayDate()}
-            onChange={(e) => setEndDate(e.target.value)}
+            onChange={(e) => {
+              const selctedDate = new Date(e.target.value);
+              setEndDate(isValidDate(selctedDate) ? selctedDate : new Date());
+            }}
           />
         </div>
       </div>
