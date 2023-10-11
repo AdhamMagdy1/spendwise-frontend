@@ -1,105 +1,52 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import Chart from 'chart.js/auto';
 import { Line, Pie } from 'react-chartjs-2';
 import ChartDeferred from 'chartjs-plugin-deferred';
 import '../assets/styles/components/Analytics.css';
+import { getSpendingInRange } from '../services/spendingApi';
 
 function Analytics() {
   Chart.register(ChartDeferred);
   Chart.defaults.font.family = 'Poppins';
   Chart.defaults.color = '#06555a';
-  const [startDate, setStartDate] = useState(getTodayDate());
-  const [endDate, setEndDate] = useState(getTodayDate()); // Set initial value to today's date
-  function getTodayDate() {
-    const today = new Date();
-    const year = today.getFullYear();
-    const month = String(today.getMonth() + 1).padStart(2, '0'); // Add 1 to month because it's zero-indexed
-    const day = String(today.getDate()).padStart(2, '0');
-    return `${year}-${day}-${month}`;
-  }
-  function getJoinedDate() {
-    return '2023-01-10';
-  }
-  const data = {
-    spendingRecords: [
-      {
-        date: '2023-05-01T14:00:00.000Z',
-        product: 'Appels and oranges and some groceries form the supermarket',
-        price: 10,
-        primaryTag: 'Shopping',
-        secondaryTag: 'Coffe',
-        _id: '951e95e503da9fc5a78fd8b0',
-      },
-      {
-        date: '2023-04-02T14:00:00.000Z',
-        product: 'تفاح',
-        price: 20,
-        primaryTag: 'Shopping',
-        secondaryTag: 'Coffe',
-        _id: '851e95e503da9fc5a78fd8b0',
-      },
-      {
-        date: '2023-04-03T14:00:00.000Z',
-        product: 'تفاح',
-        price: 30,
-        primaryTag: 'Shopping',
-        secondaryTag: 'Milk',
-        _id: '751e95e503da9fc5a78fd8b0',
-      },
-      {
-        date: '2023-04-04T14:00:00.000Z',
-        product: 'تفاح',
-        price: 40,
-        primaryTag: 'College',
-        secondaryTag: 'Coffe',
-        _id: '651e95e503da9fc5a78fd8b0',
-      },
-      {
-        date: '2023-04-05T14:00:00.000Z',
-        product: 'تفاح',
-        price: 30,
-        primaryTag: 'College',
-        secondaryTag: 'Milk',
-        _id: '551e95e503da9fc5a78fd8b0',
-      },
-      {
-        date: '2023-04-06T14:00:00.000Z',
-        product: 'تفاح',
-        price: 20,
-        primaryTag: 'College',
-        secondaryTag: 'Vegetables',
-        _id: '451e95e503da9fc5a78fd8b0',
-      },
-      {
-        date: '2023-04-07T14:00:00.000Z',
-        product: 'تفاح',
-        price: 50,
-        primaryTag: 'College',
-        secondaryTag: 'Vegetables',
-        _id: '351e95e503da9fc5a78fd8b0',
-      },
-      {
-        date: '2023-04-08T14:00:00.000Z',
-        product: 'تفاح',
-        price: 100,
-        primaryTag: 'Bils',
-        secondaryTag: 'Vegetables',
-        _id: '251e95e503da9fc5a78fd8b0',
-      },
-      {
-        date: '2023-04-08T14:00:00.000Z',
-        product: 'تفاح',
-        price: 80,
-        primaryTag: 'Bils',
-        secondaryTag: 'Vegetables',
-        _id: '151e95e503da9fc5a78fd8b0',
-      },
-    ],
+  const joinDate = window.localStorage.getItem('joinDate');
+  const [startDate, setStartDate] = useState(
+    new Date(joinDate).toISOString().split('T')[0]
+  );
+  const [endDate, setEndDate] = useState(
+    new Date(getTodayDate()).toISOString().split('T')[0]
+  );
+  const [data, setData] = useState({ spendingRecords: [] });
+  const [isLoading, setIsLoading] = useState(true); // New loading state
+
+  const getData = async (startDate, endDate) => {
+    try {
+      const spendingData = await getSpendingInRange(startDate, endDate);
+      console.log(startDate, endDate);
+      setData(spendingData);
+      setIsLoading(false); // Data has been loaded
+    } catch (error) {
+      console.error(error);
+      setIsLoading(false); // Handle errors by setting isLoading to false
+    }
   };
 
+  useEffect(() => {
+    getData(startDate, endDate);
+    console.log('data received');
+  }, [startDate, endDate]);
+
+  function getTodayDate() {
+    const today = new Date();
+    return today.toISOString().split('T')[0];
+  }
+
   function formatDate(dateString) {
-    const options = { year: 'numeric', month: '2-digit', day: '2-digit' };
-    return new Date(dateString).toLocaleDateString(undefined, options);
+    const date = new Date(dateString);
+    const day = String(date.getDate()).padStart(2, '0');
+    const month = String(date.getMonth() + 1).padStart(2, '0'); // Add 1 to month because it's zero-indexed
+    const year = date.getFullYear();
+    return `${day}/${month}/${year}`;
   }
   const dateToPriceMap = {};
 
@@ -169,7 +116,7 @@ function Analytics() {
           },
         },
         beginAtZero: true, // Start Y-axis at 0
-        max: 100, // Set max Y-axis value to 100
+        // max: 100, // Set max Y-axis value to 100
         grid: {
           display: false, // Hide grid lines for Y-axis
         },
@@ -263,16 +210,18 @@ function Analytics() {
       },
     },
   };
+
   return (
     <div className="All">
       <div className="datePick H3">
         <div>
           <p>From:</p>
           <input
+            required
             className="H3"
             type="date"
             value={startDate}
-            min={getJoinedDate()}
+            min={joinDate}
             max={getTodayDate()}
             onChange={(e) => setStartDate(e.target.value)}
           />
@@ -280,25 +229,34 @@ function Analytics() {
         <div>
           <p>To:</p>
           <input
+            required
             className="H3"
             type="date"
             value={endDate}
-            min={getJoinedDate()}
+            min={startDate}
             max={getTodayDate()}
             onChange={(e) => setEndDate(e.target.value)}
           />
         </div>
       </div>
       <div className="charts">
-        <div className="chart-container">
-          <Line data={chartData} options={chartOptions} />
-        </div>
-        <div className="chart-container">
-          <Pie data={primaryTagData} options={primaryPieChartOptions} />
-        </div>
-        <div className="chart-container">
-          <Pie data={secondaryTagData} options={secondaryPieChartOptions} />
-        </div>
+        {isLoading ? ( // Show a loading message while data is being fetched
+          <p>Loading data...</p>
+        ) : data.spendingRecords.length === 0 ? (
+          <p>No spending records found.</p>
+        ) : (
+          <>
+            <div className="chart-container">
+              <Line data={chartData} options={chartOptions} />
+            </div>
+            <div className="chart-container">
+              <Pie data={primaryTagData} options={primaryPieChartOptions} />
+            </div>
+            <div className="chart-container">
+              <Pie data={secondaryTagData} options={secondaryPieChartOptions} />
+            </div>
+          </>
+        )}
       </div>
     </div>
   );

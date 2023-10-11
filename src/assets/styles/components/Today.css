@@ -75,7 +75,7 @@
   border-radius: 30px;
   background: var(--Secondry-color);
 }
-.addItmeBtn {
+.addItemBtn {
   width: 250px;
   height: 53px;
   flex-shrink: 0;

@@ -7,35 +7,42 @@ import { getSpendingInRange } from '../services/spendingApi';
 import { createNewSpending } from '../services/spendingApi';
 import { deleteSpending } from '../services/spendingApi';
 import { editSpending } from '../services/spendingApi';
+
 function Today() {
   const today = new Date();
   const isoDate = today.toISOString();
   console.log(isoDate);
-  const [data, setData] = useState({ spendingRecords: [] }); // Initialize with an empty array
+  const [data, setData] = useState({ spendingRecords: [] });
+  const [isLoading, setIsLoading] = useState(true); // New loading state
 
   const getData = async (startDate, endDate) => {
     try {
       const spendingData = await getSpendingInRange(startDate, endDate);
-      // console.log(spendingData)
-      setData(spendingData); // Set the data or initialize with an empty array
+      // console.log(spendingData);
+      setData(spendingData);
+      setIsLoading(false); // Data has been loaded
     } catch (error) {
-      console.error(error);
+      // console.error(error);
+      setIsLoading(false); // Handle errors by setting isLoading to false
     }
   };
+
   useEffect(() => {
     getData(isoDate, isoDate);
+    console.log(data);
     console.log('data received');
   }, []);
 
   const editAspeinding = async (id, date, values) => {
     await editSpending(id, date, values);
   };
+
   const addToSpending = async (date, values) => {
     await createNewSpending(date, values);
   };
 
   const addItem = async () => {
-    let formValues; // Declare a new variable to store the computed form values
+    let formValues;
     const { value } = await Swal.fire({
       title: 'Add Item',
       html:
@@ -58,16 +65,13 @@ function Today() {
           document.getElementById('swal-input4').value,
         ];
 
-        // Check if all of the required inputs have a value
         if (!formValues.every((value) => value)) {
-          // If not, show an error message and prevent the confirm button from being enabled
           Swal.showValidationMessage(
             'Please fill in all of the required fields.'
           );
           return false;
         }
 
-        // Otherwise, return the form values
         return formValues;
       },
     });
@@ -88,21 +92,20 @@ function Today() {
       confirmButtonText: 'Yes, delete it!',
     }).then((result) => {
       if (result.isConfirmed) {
-        // If the user confirms the deletion, call the deleteSpending function
         deleteSpending(id);
       }
     });
   };
 
   const editItem = async (id, name, price, tag1, tag2) => {
-    let formValues; // Declare a new variable to store the computed form values
+    let formValues;
     const { value } = await Swal.fire({
-      title: 'edit Itme',
+      title: 'edit Item',
       html:
         `<input autocomplete="off" required type="text" id="swal-input1" class="swal2-input" placeholder="${name}">` +
-        `<input autocomplete="off"  required type="number"  id="swal-input2" class="swal2-input" placeholder="${price}">` +
-        `<input autocomplete="off" required type="text"  id="swal-input3" class="swal2-input" placeholder="${tag1}">` +
-        `<input autocomplete="off"  required type="text"  id="swal-input4" class="swal2-input" placeholder="${tag2}">`,
+        `<input autocomplete="off" required type="number" id="swal-input2" class="swal2-input" placeholder="${price}">` +
+        `<input autocomplete="off" required type="text" id="swal-input3" class="swal2-input" placeholder="${tag1}">` +
+        `<input autocomplete="off" required type="text" id="swal-input4" class="swal2-input" placeholder="${tag2}">`,
       focusConfirm: false,
       confirmButtonColor: '#8bf349',
       showCancelButton: true,
@@ -117,16 +120,14 @@ function Today() {
           document.getElementById('swal-input3').value,
           document.getElementById('swal-input4').value,
         ];
-        // Check if all of the required inputs have a value
+
         if (!formValues.every((value) => value)) {
-          // If not, show an error message and prevent the confirm button from being enabled
           Swal.showValidationMessage(
             'Please fill in all of the required fields.'
           );
           return false;
         }
 
-        // Otherwise, return the form values
         return formValues;
       },
     });
@@ -135,19 +136,22 @@ function Today() {
       editAspeinding(id, isoDate, formValues);
     }
   };
+
   const total = data.spendingRecords.reduce((acc, record) => {
     return acc + record.price;
   }, 0);
+
   return (
     <div className="container">
       <div className="view">
-        <div className="records-list">
-          {data.spendingRecords.length === 0 ? (
-            <p>No spending records found.</p>
-          ) : (
-            data.spendingRecords.map((record) => (
+        {isLoading ? (
+          <p>loading...</p>
+        ) : data.spendingRecords.length === 0 ? (
+          <p>No spending records found.</p>
+        ) : (
+          <div className="records-list">
+            {data.spendingRecords.map((record) => (
               <div className="record P" key={record._id}>
-                {/* Render record details */}
                 <p>{record.product}</p>
                 <p>${record.price}</p>
                 <div className="tags">
@@ -173,17 +177,16 @@ function Today() {
                   </button>
                 </div>
               </div>
-            ))
-          )}
-        </div>
-        {/* Render the total price */}
+            ))}
+          </div>
+        )}
         <div className="total-price H3">
           <p>
             Total Price: $<span>{total}</span>
           </p>
         </div>
       </div>
-      <button className="addItmeBtn H3" onClick={addItem}>
+      <button className="addItemBtn H3" onClick={addItem}>
         Add Item
       </button>
     </div>
