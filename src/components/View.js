@@ -1,95 +1,36 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import '../assets/styles/components/View.css';
-
+import { getSpendingInRange } from '../services/spendingApi';
 function View() {
   const joinDate = window.localStorage.getItem('joinDate');
-  const [startDate, setStartDate] = useState(joinDate);
-  const [endDate, setEndDate] = useState(getTodayDate()); // Set initial value to today's date
+  const [startDate, setStartDate] = useState(new Date(joinDate));
+  const [endDate, setEndDate] = useState(new Date(getTodayDate())); // Set initial value to today's date
+  const [data, setData] = useState({ spendingRecords: [] }); // Initialize with an empty array
 
+  const getData = async (startDate, endDate) => {
+    try {
+      const spendingData = await getSpendingInRange(
+        startDate.toISOString(),
+        endDate.toISOString()
+      );
+      console.log(startDate.toISOString(), endDate.toISOString());
+      // console.log(spendingData)
+      setData(spendingData); // Set the data or initialize with an empty array
+    } catch (error) {
+      console.error(error);
+    }
+  };
+  useEffect(() => {
+    getData(startDate, endDate);
+    console.log('data received');
+  }, [startDate, endDate]);
   function getTodayDate() {
     const today = new Date();
-    const year = today.getFullYear();
-    const month = String(today.getMonth() + 1).padStart(2, '0'); // Add 1 to month because it's zero-indexed
-    const day = String(today.getDate()).padStart(2, '0');
-    return `${year}-${day}-${month}`;
+    // const year = today.getFullYear();
+    // const month = String(today.getMonth() + 1).padStart(2, '0'); // Add 1 to month because it's zero-indexed
+    // const day = String(today.getDate()).padStart(2, '0');
+    return today.toISOString().split('T')[0];
   }
-
-  const data = {
-    spendingRecords: [
-      {
-        date: '2023-04-01T14:00:00.000Z',
-        product: 'Appels and oranges and some groceries form the supermarket',
-        price: 10,
-        primaryTag: 'Shopping',
-        secondaryTag: 'Milk',
-        _id: '951e95e503da9fc5a78fd8b0',
-      },
-      {
-        date: '2023-04-02T14:00:00.000Z',
-        product: 'تفاح',
-        price: 20,
-        primaryTag: 'Shopping',
-        secondaryTag: 'Milk',
-        _id: '851e95e503da9fc5a78fd8b0',
-      },
-      {
-        date: '2023-04-03T14:00:00.000Z',
-        product: 'تفاح',
-        price: 30,
-        primaryTag: 'Shopping',
-        secondaryTag: 'Milk',
-        _id: '751e95e503da9fc5a78fd8b0',
-      },
-      {
-        date: '2023-04-04T14:00:00.000Z',
-        product: 'تفاح',
-        price: 40,
-        primaryTag: 'Shopping',
-        secondaryTag: 'Milk',
-        _id: '651e95e503da9fc5a78fd8b0',
-      },
-      {
-        date: '2023-04-05T14:00:00.000Z',
-        product: 'تفاح',
-        price: 30,
-        primaryTag: 'Shopping',
-        secondaryTag: 'Milk',
-        _id: '551e95e503da9fc5a78fd8b0',
-      },
-      {
-        date: '2023-04-06T14:00:00.000Z',
-        product: 'تفاح',
-        price: 20,
-        primaryTag: 'Shopping',
-        secondaryTag: 'Milk',
-        _id: '451e95e503da9fc5a78fd8b0',
-      },
-      {
-        date: '2023-04-07T14:00:00.000Z',
-        product: 'تفاح',
-        price: 50,
-        primaryTag: 'Shopping',
-        secondaryTag: 'Milk',
-        _id: '351e95e503da9fc5a78fd8b0',
-      },
-      {
-        date: '2023-04-08T14:00:00.000Z',
-        product: 'تفاح',
-        price: 100,
-        primaryTag: 'Shopping',
-        secondaryTag: 'Milk',
-        _id: '251e95e503da9fc5a78fd8b0',
-      },
-      {
-        date: '2023-04-08T14:00:00.000Z',
-        product: 'تفاح',
-        price: 80,
-        primaryTag: 'Shopping',
-        secondaryTag: 'Milk',
-        _id: '151e95e503da9fc5a78fd8b0',
-      },
-    ],
-  };
 
   const total = data.spendingRecords.reduce((accumulator, record) => {
     return accumulator + record.price;
@@ -101,7 +42,6 @@ function View() {
     const year = date.getFullYear();
     return `${day}/${month}/${year}`;
   }
-  
 
   return (
     <div className="contnet">
@@ -111,10 +51,10 @@ function View() {
           <input
             className="H3"
             type="date"
-            value={startDate}
+            value={startDate.toISOString().split('T')[0]} // Format startDate as 'YYYY-MM-DD'
             min={joinDate}
             max={getTodayDate()}
-            onChange={(e) => setStartDate(e.target.value)}
+            onChange={(e) => setStartDate(new Date(e.target.value))}
           />
         </div>
         <div>
@@ -122,27 +62,31 @@ function View() {
           <input
             className="H3"
             type="date"
-            value={endDate}
-            min={startDate}
+            value={endDate.toISOString().split('T')[0]} // Format endDate as 'YYYY-MM-DD'
+            min={startDate.toISOString().split('T')[0]}
             max={getTodayDate()}
-            onChange={(e) => setEndDate(e.target.value)}
+            onChange={(e) => setEndDate(new Date(e.target.value))}
           />
         </div>
       </div>
       <div className="view">
         <div className="records-list">
-          {data.spendingRecords.map((record) => (
-            <div className="record P" key={record._id}>
-              {/* Render record details */}
-              <p>{formatDate(record.date)}</p>
-              <p>{record.product}</p>
-              <p>${record.price}</p>
-              <div className="tags">
-                <p className="t1">{record.primaryTag}</p>
-                <p className="t2">{record.secondaryTag}</p>
+          {data.spendingRecords.length === 0 ? (
+            <p>No spending records found.</p>
+          ) : (
+            data.spendingRecords.map((record) => (
+              <div className="record P" key={record._id}>
+                {/* Render record details */}
+                <p>{formatDate(record.date)}</p>
+                <p>{record.product}</p>
+                <p>${record.price}</p>
+                <div className="tags">
+                  <p className="t1">{record.primaryTag}</p>
+                  <p className="t2">{record.secondaryTag}</p>
+                </div>
               </div>
-            </div>
-          ))}
+            ))
+          )}
         </div>
         {/* Render the total price */}
         <div className="total-price H3">
