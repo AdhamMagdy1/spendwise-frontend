@@ -102,10 +102,10 @@ function Today() {
     const { value } = await Swal.fire({
       title: 'edit Item',
       html:
-        `<input autocomplete="off" required type="text" id="swal-input1" class="swal2-input" placeholder="${name}">` +
-        `<input autocomplete="off" required type="number" id="swal-input2" class="swal2-input" placeholder="${price}">` +
-        `<input autocomplete="off" required type="text" id="swal-input3" class="swal2-input" placeholder="${tag1}">` +
-        `<input autocomplete="off" required type="text" id="swal-input4" class="swal2-input" placeholder="${tag2}">`,
+        `<input autocomplete="off" required type="text" id="swal-input1" class="swal2-input" placeholder="NAME" value="${name}">` +
+        `<input autocomplete="off" required type="number" id="swal-input2" class="swal2-input" placeholder="PRIcE" value="${name}">` +
+        `<input autocomplete="off" required type="text" id="swal-input3" class="swal2-input" placeholder="PRIMARY TAG" value="${name}">` +
+        `<input autocomplete="off" required type="text" id="swal-input4" class="swal2-input" placeholder="SECONDARY TAG" value="${name}">`,
       focusConfirm: false,
       confirmButtonColor: '#8bf349',
       showCancelButton: true,
