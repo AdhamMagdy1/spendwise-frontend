@@ -103,9 +103,9 @@ function Today() {
       title: 'edit Item',
       html:
         `<input autocomplete="off" required type="text" id="swal-input1" class="swal2-input" placeholder="NAME" value="${name}">` +
-        `<input autocomplete="off" required type="number" id="swal-input2" class="swal2-input" placeholder="PRIcE" value="${name}">` +
-        `<input autocomplete="off" required type="text" id="swal-input3" class="swal2-input" placeholder="PRIMARY TAG" value="${name}">` +
-        `<input autocomplete="off" required type="text" id="swal-input4" class="swal2-input" placeholder="SECONDARY TAG" value="${name}">`,
+        `<input autocomplete="off" required type="number" id="swal-input2" class="swal2-input" placeholder="PRICE" value="${price}">` +
+        `<input autocomplete="off" required type="text" id="swal-input3" class="swal2-input" placeholder="PRIMARY TAG" value="${tag1}">` +
+        `<input autocomplete="off" required type="text" id="swal-input4" class="swal2-input" placeholder="SECONDARY TAG" value="${tag2}">`,
       focusConfirm: false,
       confirmButtonColor: '#8bf349',
       showCancelButton: true,
