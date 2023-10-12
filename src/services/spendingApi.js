@@ -30,6 +30,9 @@ export const getSpendingInRange = async (startDate, EndDate) => {
       text: errorMessage,
       confirmButtonColor: '#8bf349',
       color: '#06555a',
+    }).then(() => {
+      // Redirect to the home page
+      window.location.href = '/home'; // Replace '/home' with your actual home page URL
     });
   }
 };
@@ -80,6 +83,9 @@ export const createNewSpending = async (date, formValues) => {
       text: errorMessage,
       confirmButtonColor: '#8bf349',
       color: '#06555a',
+    }).then(() => {
+      // Redirect to the home page
+      window.location.href = '/home'; // Replace '/home' with your actual home page URL
     });
   }
 };
@@ -120,6 +126,9 @@ export const deleteSpending = async (id) => {
       text: errorMessage,
       confirmButtonColor: '#8bf349',
       color: '#06555a',
+    }).then(() => {
+      // Redirect to the home page
+      window.location.href = '/home'; // Replace '/home' with your actual home page URL
     });
   }
 };
@@ -170,6 +179,9 @@ export const editSpending = async (id, date , formValues) => {
       text: errorMessage,
       confirmButtonColor: '#8bf349',
       color: '#06555a',
+    }).then(() => {
+      // Redirect to the home page
+      window.location.href = '/home'; // Replace '/home' with your actual home page URL
     });
   }
 };

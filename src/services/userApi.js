@@ -44,6 +44,9 @@ export const registerUser = async (name, email, password) => {
       text: errorMessage,
       confirmButtonColor: '#8bf349',
       color: '#06555a',
+    }).then(() => {
+      // Redirect to the home page
+      window.location.href = '/home'; // Replace '/home' with your actual home page URL
     });
   }
 };
@@ -105,6 +108,9 @@ export const loginUser = async (email, password) => {
           text: errorMessage,
           confirmButtonColor: '#8bf349',
           color: '#06555a',
+        }).then(() => {
+          // Redirect to the home page
+          window.location.href = '/home'; // Replace '/home' with your actual home page URL
         });
       }
     } else {
@@ -197,6 +203,9 @@ export const setBudget = async (budget) => {
       text: errorMessage,
       confirmButtonColor: '#8bf349',
       color: '#06555a',
+    }).then(() => {
+      // Redirect to the home page
+      window.location.href = '/home'; // Replace '/home' with your actual home page URL
     });
   }
 };
