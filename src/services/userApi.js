@@ -159,7 +159,7 @@ export const getBudget = async () => {
       text: errorMessage,
       confirmButtonColor: '#8bf349',
       color: '#06555a',
-    }).then((isConfirmed) => {
+    }).then(() => {
       // Redirect to the home page
       window.location.href = '/home'; // Replace '/home' with your actual home page URL
     });
