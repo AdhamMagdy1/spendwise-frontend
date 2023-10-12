@@ -131,7 +131,6 @@ export const loginUser = async (email, password) => {
   }
 };
 
-
 // Function to get  userbudget
 export const getBudget = async () => {
   const endpoint = '/user/budget/current';
@@ -160,6 +159,9 @@ export const getBudget = async () => {
       text: errorMessage,
       confirmButtonColor: '#8bf349',
       color: '#06555a',
+    }).then((isConfirmed) => {
+      // Redirect to the home page
+      window.location.href = '/home'; // Replace '/home' with your actual home page URL
     });
   }
 };
