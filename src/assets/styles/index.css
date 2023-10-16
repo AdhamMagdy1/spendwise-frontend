@@ -77,6 +77,10 @@ button:focus {
   /* Add your custom focus styles here */
   outline: none;
   border: none;
+  transform: scale(0.98);
+}
+button:hover {
+  transform: scale(0.98);
 }
 /* Remove default styles for anchor links */
 a {

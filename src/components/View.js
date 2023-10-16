@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useLayoutEffect } from 'react';
 import '../assets/styles/components/View.css';
 import { getSpendingInRange } from '../services/spendingApi';
 
@@ -21,11 +21,26 @@ function View() {
       setIsLoading(false); // Handle errors by setting isLoading to false
     }
   };
+  const addSlideAnimation = () => {
+    const tagsContainers = document.querySelectorAll('.tags');
+
+    tagsContainers.forEach((tagsContainer) => {
+      const tagElements = tagsContainer.querySelectorAll('.tags p');
+
+      tagElements.forEach((tag) => {
+        if (tag.textContent.length > 6) {
+          tag.style.animation = 'slide 5s linear infinite';
+        }
+      });
+    });
+  };
 
   useEffect(() => {
     getData(startDate, endDate);
   }, [startDate, endDate]);
-
+  useLayoutEffect(() => {
+    addSlideAnimation();
+  }, [data]);
   function getTodayDate() {
     const today = new Date();
     return today.toISOString().split('T')[0];
@@ -88,11 +103,15 @@ function View() {
             {data.spendingRecords.map((record) => (
               <div className="record P" key={record._id}>
                 <p>{formatDate(record.date)}</p>
-                <p>{record.product}</p>
+                <p className="nameP">{record.product}</p>
                 <p>${record.price}</p>
                 <div className="tags">
-                  <p className="t1">{record.primaryTag}</p>
-                  <p className="t2">{record.secondaryTag}</p>
+                  <div className="t1">
+                    <p>{record.primaryTag}</p>
+                  </div>
+                  <div className="t2">
+                    <p>{record.secondaryTag}</p>
+                  </div>
                 </div>
               </div>
             ))}

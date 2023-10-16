@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useLayoutEffect } from 'react';
 import Swal from 'sweetalert2';
 import '../assets/styles/components/Today.css';
 import deleteImg from '../assets/images/delete.svg';
@@ -27,6 +27,9 @@ function Today() {
   useEffect(() => {
     getData(isoDate, isoDate);
   }, []);
+  useLayoutEffect(() => {
+    addSlideAnimation();
+  }, [data]);
 
   const editAspeinding = async (id, date, values) => {
     await editSpending(id, date, values);
@@ -138,7 +141,19 @@ function Today() {
   const total = data.spendingRecords.reduce((acc, record) => {
     return acc + record.price;
   }, 0);
+  const addSlideAnimation = () => {
+    const tagsContainers = document.querySelectorAll('.tags');
 
+    tagsContainers.forEach((tagsContainer) => {
+      const tagElements = tagsContainer.querySelectorAll('.tags p');
+
+      tagElements.forEach((tag) => {
+        if (tag.textContent.length > 6) {
+          tag.style.animation = 'slide 5s linear infinite';
+        }
+      });
+    });
+  };
   return (
     <div className="container">
       <div className="view">
@@ -150,7 +165,7 @@ function Today() {
           <div className="records-list">
             {data.spendingRecords.map((record) => (
               <div className="record P" key={record._id}>
-                <p>{record.product}</p>
+                <p className="nameP">{record.product}</p>
                 <p>${record.price}</p>
                 <div className="tags">
                   <p className="t1">{record.primaryTag}</p>
