@@ -21,7 +21,6 @@ export const registerUser = async (name, email, password) => {
     body: JSON.stringify(userData),
   });
   const responseData = await response.json();
-  console.log(responseData);
   if (response.ok) {
     // Status code is OK (e.g., 200)
     Swal.fire({
@@ -51,61 +50,45 @@ export const loginUser = async (email, password) => {
   const loginEndpoint = '/user/login';
   const joinDateEndpoint = '/user/joinDate';
   const url = (endpoint) => baseUrl + endpoint;
+  // User data to be sent in the request body for login
+  const userData = {
+    email: email,
+    password: password,
+  };
 
-  try {
-    // User data to be sent in the request body for login
-    const userData = {
-      email: email,
-      password: password,
-    };
+  // Login request
+  const loginResponse = await fetch(url(loginEndpoint), {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify(userData),
+  });
 
-    // Login request
-    const loginResponse = await fetch(url(loginEndpoint), {
-      method: 'POST',
+  const loginData = await loginResponse.json();
+
+  if (loginResponse.ok) {
+    window.localStorage.setItem('token', loginData.token);
+    const token = window.localStorage.getItem('token');
+
+    // Fetch join date request
+    const joinDateResponse = await fetch(url(joinDateEndpoint), {
+      method: 'GET',
       headers: {
-        'Content-Type': 'application/json',
+        Authorization: `${token}`,
       },
-      body: JSON.stringify(userData),
     });
+    const joinDateData = await joinDateResponse.json();
+    if (joinDateResponse.ok) {
+      const joinDate = joinDateData.joinDate.split('T')[0];
+      // Save the join date to local storage
+      window.localStorage.setItem('joinDate', joinDate);
 
-    const loginData = await loginResponse.json();
-
-    if (loginResponse.ok) {
-      window.localStorage.setItem('token', loginData.token);
-      const token = window.localStorage.getItem('token');
-
-      // Fetch join date request
-      const joinDateResponse = await fetch(url(joinDateEndpoint), {
-        method: 'GET',
-        headers: {
-          Authorization: `${token}`,
-        },
-      });
-
-      if (joinDateResponse.ok) {
-        const joinDateData = await joinDateResponse.json();
-        console.log(joinDateData);
-
-        const joinDate = joinDateData.joinDate.split('T')[0];
-        // Save the join date to local storage
-        window.localStorage.setItem('joinDate', joinDate);
-
-        // Redirect to dashboard
-        window.location.href = './dashboard';
-      } else {
-        // Handle join date request error
-        const errorMessage = joinDateResponse.statusText;
-        Swal.fire({
-          title: 'Error',
-          icon: 'error',
-          text: errorMessage,
-          confirmButtonColor: '#8bf349',
-          color: '#06555a',
-        });
-      }
+      // Redirect to dashboard
+      window.location.href = './dashboard';
     } else {
-      // Handle login request error
-      const errorMessage = loginData.message || loginData.errors[0].msg;
+      // Handle join date request error
+      const errorMessage = joinDateData.message;
       Swal.fire({
         title: 'Error',
         icon: 'error',
@@ -114,13 +97,13 @@ export const loginUser = async (email, password) => {
         color: '#06555a',
       });
     }
-  } catch (error) {
-    // Handle any other errors that may occur
-    console.error(error);
+  } else {
+    // Handle login request error
+    const errorMessage = loginData.message || loginData.errors[0].msg;
     Swal.fire({
       title: 'Error',
       icon: 'error',
-      text: 'An error occurred while logging in.',
+      text: errorMessage,
       confirmButtonColor: '#8bf349',
       color: '#06555a',
     });
@@ -139,14 +122,24 @@ export const getBudget = async () => {
       Authorization: `${token}`, // Add the authorization header with the token
     },
   });
-
+  const responseData = await response.json();
   if (response.ok) {
-    const responseData = await response.json();
-    console.log(responseData);
     return responseData.currentBudget;
   } else {
-    console.log('error');
-    // window.location.href = '/home';
+    // Status code is not OK
+    const errorMessage = responseData.message || responseData.errors[0].msg;
+
+    Swal.fire({
+      title: 'Error',
+      icon: 'error',
+      text: errorMessage,
+      confirmButtonColor: '#8bf349',
+      color: '#06555a',
+    }).then((isConfirmed) => {
+      logOut();
+      // Redirect to dashboard
+      window.location.href = './dashboard';
+    });
   }
 };
 
@@ -168,7 +161,6 @@ export const setBudget = async (budget) => {
     body: JSON.stringify(userData),
   });
   const responseData = await response.json();
-  console.log(responseData);
   if (response.ok) {
     return responseData.currentBudget;
   } else {

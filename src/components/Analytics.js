@@ -21,18 +21,15 @@ function Analytics() {
         startDate.toISOString(),
         endDate.toISOString()
       );
-      console.log(startDate.toISOString(), endDate.toISOString());
       setData(spendingData);
       setIsLoading(false); // Data has been loaded
     } catch (error) {
-      console.error(error);
       setIsLoading(false); // Handle errors by setting isLoading to false
     }
   };
 
   useEffect(() => {
     getData(startDate, endDate);
-    console.log('data received');
   }, [startDate, endDate]);
 
   function getTodayDate() {
@@ -213,9 +210,6 @@ function Analytics() {
       },
     },
   };
-  function isValidDate(date) {
-    return date instanceof Date && !isNaN(date);
-  }
   return (
     <div className="All">
       <div className="datePick H3">

@@ -14,15 +14,12 @@ export const getSpendingInRange = async (startDate, EndDate) => {
       Authorization: `${token}`, // Add the authorization header with the token
     },
   });
-
+  const responseData = await response.json();
   if (response.ok) {
-    const responseData = await response.json();
-    console.log(responseData);
     return responseData;
   } else {
-    console.log(response.json());
     // Status code is not OK
-    const errorMessage = response.statusText; // Use response.statusText for error message
+    const errorMessage = responseData.message; // Use response.statusText for error message
 
     Swal.fire({
       title: 'Error',
@@ -57,7 +54,6 @@ export const createNewSpending = async (date, formValues) => {
     body: JSON.stringify(userData),
   });
   const responseData = await response.json();
-  console.log(responseData);
   if (response.ok) {
     // Status code is OK (e.g., 200)
     Swal.fire({
@@ -97,7 +93,6 @@ export const deleteSpending = async (id) => {
     },
   });
   const responseData = await response.json();
-  console.log(responseData);
   if (response.ok) {
     // Status code is OK (e.g., 200)
     Swal.fire({
@@ -147,7 +142,6 @@ export const editSpending = async (id, date , formValues) => {
     body: JSON.stringify(userData),
   });
   const responseData = await response.json();
-  console.log(responseData);
   if (response.ok) {
     // Status code is OK (e.g., 200)
     Swal.fire({

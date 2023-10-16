@@ -11,26 +11,21 @@ import { editSpending } from '../services/spendingApi';
 function Today() {
   const today = new Date();
   const isoDate = today.toISOString();
-  console.log(isoDate);
   const [data, setData] = useState({ spendingRecords: [] });
   const [isLoading, setIsLoading] = useState(true); // New loading state
 
   const getData = async (startDate, endDate) => {
     try {
       const spendingData = await getSpendingInRange(startDate, endDate);
-      // console.log(spendingData);
       setData(spendingData);
       setIsLoading(false); // Data has been loaded
     } catch (error) {
-      // console.error(error);
       setIsLoading(false); // Handle errors by setting isLoading to false
     }
   };
 
   useEffect(() => {
     getData(isoDate, isoDate);
-    console.log(data);
-    console.log('data received');
   }, []);
 
   const editAspeinding = async (id, date, values) => {

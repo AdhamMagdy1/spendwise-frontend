@@ -33,7 +33,6 @@ function Dashboard() {
 
   useEffect(() => {
     fetchBudget();
-    console.log('budgets loaded');
   }, []);
 
   const getUserInput = async () => {
@@ -79,7 +78,6 @@ function Dashboard() {
     setActiveButton(buttonName);
 
     if (budgetLoaded) {
-      console.log(budget);
       switch (buttonName) {
         case 'Today':
           setActiveComponent(<Today />);
