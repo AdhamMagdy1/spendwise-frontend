@@ -48,6 +48,7 @@ function Dashboard() {
       input: 'number',
       inputLabel: 'Enter Your Current Budget',
       inputPlaceholder: 'Budget',
+      inputValue: budget,
       showCancelButton: true,
       confirmButtonColor: '#8bf349',
       color: '#06555a',
