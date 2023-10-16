@@ -12,34 +12,54 @@ function Today() {
   const today = new Date();
   const isoDate = today.toISOString();
   const [data, setData] = useState({ spendingRecords: [] });
-  const [isLoading, setIsLoading] = useState(true); // New loading state
+  const [isLoading, setIsLoading] = useState(true);
+  const [isAddItemLoading, setIsAddItemLoading] = useState(false);
+  const [isEditItemLoading, setIsEditItemLoading] = useState(false);
+  const [isDeleteItemLoading, setIsDeleteItemLoading] = useState(false);
 
   const getData = async (startDate, endDate) => {
     try {
       const spendingData = await getSpendingInRange(startDate, endDate);
       setData(spendingData);
-      setIsLoading(false); // Data has been loaded
+      setIsLoading(false);
     } catch (error) {
-      setIsLoading(false); // Handle errors by setting isLoading to false
+      setIsLoading(false);
     }
   };
 
   useEffect(() => {
     getData(isoDate, isoDate);
   }, []);
+
   useLayoutEffect(() => {
     addSlideAnimation();
   }, [data]);
 
-  const editAspeinding = async (id, date, values) => {
-    await editSpending(id, date, values);
+  const editAspending = async (id, date, values) => {
+    setIsEditItemLoading(true);
+
+    try {
+      await editSpending(id, date, values);
+    } finally {
+      setIsEditItemLoading(false);
+    }
   };
 
   const addToSpending = async (values) => {
-    await createNewSpending(values);
+    setIsAddItemLoading(true);
+
+    try {
+      await createNewSpending(values);
+    } finally {
+      setIsAddItemLoading(false);
+    }
   };
 
   const addItem = async () => {
+    if (isAddItemLoading) {
+      return;
+    }
+
     let formValues;
     const today = new Date();
     const todayFormatted = today.toISOString().split('T')[0];
@@ -87,7 +107,6 @@ function Today() {
         }
 
         if (!selectedDate || isNaN(dateObject)) {
-          // If the date is empty or invalid, set it to today's date
           formValues.push(todayFormatted);
         } else {
           formValues.push(selectedDate);
@@ -103,6 +122,10 @@ function Today() {
   };
 
   const deleteItem = async (id) => {
+    if (isDeleteItemLoading) {
+      return;
+    }
+
     Swal.fire({
       title: 'Are you sure?',
       text: "You won't be able to revert this!",
@@ -111,14 +134,24 @@ function Today() {
       confirmButtonColor: '#8bf349',
       color: '#06555a',
       confirmButtonText: 'Yes, delete it!',
-    }).then((result) => {
+    }).then(async (result) => {
       if (result.isConfirmed) {
-        deleteSpending(id);
+        setIsDeleteItemLoading(true);
+
+        try {
+          await deleteSpending(id);
+        } finally {
+          setIsDeleteItemLoading(false);
+        }
       }
     });
   };
 
   const editItem = async (id, name, price, tag1, tag2) => {
+    if (isEditItemLoading) {
+      return;
+    }
+
     let formValues;
     const { value } = await Swal.fire({
       title: 'edit Item',
@@ -155,13 +188,14 @@ function Today() {
     });
 
     if (value) {
-      editAspeinding(id, isoDate, formValues);
+      editAspending(id, isoDate, formValues);
     }
   };
 
   const total = data.spendingRecords.reduce((acc, record) => {
     return acc + record.price;
   }, 0);
+
   const addSlideAnimation = () => {
     const tagsContainers = document.querySelectorAll('.tags');
 
@@ -175,6 +209,7 @@ function Today() {
       });
     });
   };
+
   return (
     <div className="container">
       <div className="view">
@@ -197,7 +232,10 @@ function Today() {
                   </div>
                 </div>
                 <div className="actions">
-                  <button onClick={() => deleteItem(record._id)}>
+                  <button
+                    onClick={() => deleteItem(record._id)}
+                    disabled={isDeleteItemLoading}
+                  >
                     <img src={deleteImg} alt="delete" />
                   </button>
                   <button
@@ -210,6 +248,7 @@ function Today() {
                         record.secondaryTag
                       )
                     }
+                    disabled={isEditItemLoading}
                   >
                     <img src={editImg} alt="edit" />
                   </button>
@@ -224,8 +263,12 @@ function Today() {
           </p>
         </div>
       </div>
-      <button className="addItemBtn H3" onClick={addItem}>
-        Add Item
+      <button
+        className="addItemBtn H3"
+        onClick={addItem}
+        disabled={isAddItemLoading}
+      >
+        {isAddItemLoading ? 'Loading...' : 'Add Item'}
       </button>
     </div>
   );
