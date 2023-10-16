@@ -35,19 +35,30 @@ function Today() {
     await editSpending(id, date, values);
   };
 
-  const addToSpending = async (date, values) => {
-    await createNewSpending(date, values);
+  const addToSpending = async (values) => {
+    await createNewSpending(values);
   };
 
   const addItem = async () => {
     let formValues;
+    const today = new Date();
+    const todayFormatted = today.toISOString().split('T')[0];
+    const joinDate = window.localStorage.getItem('joinDate');
+
     const { value } = await Swal.fire({
       title: 'Add Item',
       html:
         '<input autocomplete="off" required type="text" id="swal-input1" class="swal2-input" placeholder="Name">' +
         '<input autocomplete="off" required type="number" id="swal-input2" class="swal2-input" placeholder="Price">' +
         '<input autocomplete="off" required type="text" id="swal-input3" class="swal2-input" placeholder="Primary tag">' +
-        '<input autocomplete="off" required type="text" id="swal-input4" class="swal2-input" placeholder="Secondary tag">',
+        '<input autocomplete="off" required type="text" id="swal-input4" class="swal2-input" placeholder="Secondary tag">' +
+        '<input type="date" id="swal-input5" class="swal2-input" value="' +
+        todayFormatted +
+        '" min="' +
+        joinDate +
+        '" max="' +
+        todayFormatted +
+        '">',
       focusConfirm: true,
       focusCancel: false,
       confirmButtonColor: '#8bf349',
@@ -65,6 +76,9 @@ function Today() {
           document.getElementById('swal-input4').value,
         ];
 
+        const selectedDate = document.getElementById('swal-input5').value;
+        const dateObject = new Date(selectedDate);
+
         if (!formValues.every((value) => value)) {
           Swal.showValidationMessage(
             'Please fill in all of the required fields.'
@@ -72,12 +86,19 @@ function Today() {
           return false;
         }
 
+        if (!selectedDate || isNaN(dateObject)) {
+          // If the date is empty or invalid, set it to today's date
+          formValues.push(todayFormatted);
+        } else {
+          formValues.push(selectedDate);
+        }
+
         return formValues;
       },
     });
 
     if (value) {
-      addToSpending(isoDate, formValues);
+      addToSpending(formValues);
     }
   };
 
@@ -168,8 +189,12 @@ function Today() {
                 <p className="nameP">{record.product}</p>
                 <p>${record.price}</p>
                 <div className="tags">
-                  <p className="t1">{record.primaryTag}</p>
-                  <p className="t2">{record.secondaryTag}</p>
+                  <div className="t1">
+                    <p>{record.primaryTag}</p>
+                  </div>
+                  <div className="t2">
+                    <p>{record.secondaryTag}</p>
+                  </div>
                 </div>
                 <div className="actions">
                   <button onClick={() => deleteItem(record._id)}>

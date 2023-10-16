@@ -32,14 +32,14 @@ export const getSpendingInRange = async (startDate, EndDate) => {
 };
 
 // Function to create a new speinign record
-export const createNewSpending = async (date, formValues) => {
+export const createNewSpending = async (formValues) => {
   const endpoint = '/spending/spending';
   const url = baseUrl + endpoint;
   const token = window.localStorage.getItem('token');
 
   // User data to be sent in the request body
   const userData = {
-    date: date,
+    date: formValues[4],
     product: formValues[0],
     price: formValues[1],
     primaryTag: formValues[2].trim(),
