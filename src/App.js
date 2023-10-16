@@ -1,4 +1,5 @@
 import React from 'react';
+import { isAuthenticated } from './services/userApi';
 import {
   BrowserRouter as Router,
   Routes,
@@ -19,7 +20,10 @@ function App() {
         <Route path="/login" element={<Login />} />
         <Route path="/" element={<Navigate to="/home" />} />
         <Route path="/home" element={<Home />} />
-        <Route path="/dashboard" element={<Dashboard />} />
+        <Route
+          path="/dashboard"
+          element={isAuthenticated() ? <Dashboard /> : <Home />}
+        />
         <Route path="*" element={<Navigate to="/home" />} />
       </Routes>
     </Router>

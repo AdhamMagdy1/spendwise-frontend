@@ -29,10 +29,6 @@ export const registerUser = async (name, email, password) => {
       icon: 'success',
       confirmButtonColor: '#8bf349',
       color: '#06555a',
-    }).then((result) => {
-      if (result.isConfirmed) {
-        window.location.href = './login';
-      }
     });
   } else {
     // Status code is not OK
@@ -44,9 +40,6 @@ export const registerUser = async (name, email, password) => {
       text: errorMessage,
       confirmButtonColor: '#8bf349',
       color: '#06555a',
-    }).then(() => {
-      // Redirect to the home page
-      window.location.href = '/home'; // Replace '/home' with your actual home page URL
     });
   }
 };
@@ -108,9 +101,6 @@ export const loginUser = async (email, password) => {
           text: errorMessage,
           confirmButtonColor: '#8bf349',
           color: '#06555a',
-        }).then(() => {
-          // Redirect to the home page
-          window.location.href = '/home'; // Replace '/home' with your actual home page URL
         });
       }
     } else {
@@ -155,20 +145,8 @@ export const getBudget = async () => {
     console.log(responseData);
     return responseData.currentBudget;
   } else {
-    console.log(response.json());
-    // Status code is not OK
-    const errorMessage = response.statusText; // Use response.statusText for error message
-
-    Swal.fire({
-      title: 'Error',
-      icon: 'error',
-      text: errorMessage,
-      confirmButtonColor: '#8bf349',
-      color: '#06555a',
-    }).then(() => {
-      // Redirect to the home page
-      window.location.href = '/home'; // Replace '/home' with your actual home page URL
-    });
+    console.log('error');
+    // window.location.href = '/home';
   }
 };
 
@@ -203,12 +181,16 @@ export const setBudget = async (budget) => {
       text: errorMessage,
       confirmButtonColor: '#8bf349',
       color: '#06555a',
-    }).then(() => {
-      // Redirect to the home page
-      window.location.href = '/home'; // Replace '/home' with your actual home page URL
     });
   }
 };
 export const logOut = () => {
   window.localStorage.clear();
+};
+export const isAuthenticated = () => {
+  if (window.localStorage.getItem('token') !== null) {
+    return true;
+  } else {
+    return false;
+  }
 };
