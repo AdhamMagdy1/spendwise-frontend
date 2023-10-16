@@ -51,7 +51,12 @@ function Analytics() {
   const dateToPriceMap = {};
 
   data.spendingRecords.forEach((record) => {
-    dateToPriceMap[formatDate(record.date)] = record.price;
+    const formattedDate = formatDate(record.date);
+    if (dateToPriceMap[formattedDate]) {
+      dateToPriceMap[formattedDate] += record.price;
+    } else {
+      dateToPriceMap[formattedDate] = record.price;
+    }
   });
 
   const labels = Object.keys(dateToPriceMap).sort(
