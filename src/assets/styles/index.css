@@ -29,7 +29,10 @@
   --Terinary-color: #f1ffe9;
   --lite-color: #d6ffbc;
 }
-
+.swal2-modal .swal2-styled:focus {
+  -webkit-box-shadow: none;
+  box-shadow: none;
+}
 body {
   background-color: var(--Terinary-color);
   overflow: hidden;

@@ -45,9 +45,11 @@ function Today() {
         '<input autocomplete="off" required type="number" id="swal-input2" class="swal2-input" placeholder="Price">' +
         '<input autocomplete="off" required type="text" id="swal-input3" class="swal2-input" placeholder="Primary tag">' +
         '<input autocomplete="off" required type="text" id="swal-input4" class="swal2-input" placeholder="Secondary tag">',
-      focusConfirm: false,
+      focusConfirm: true,
+      focusCancel: false,
       confirmButtonColor: '#8bf349',
       showCancelButton: true,
+      inputAutoFocus: false,
       color: '#06555a',
       inputAttributes: {
         required: 'true',
@@ -101,7 +103,8 @@ function Today() {
         `<input autocomplete="off" required type="number" id="swal-input2" class="swal2-input" placeholder="PRICE" value="${price}">` +
         `<input autocomplete="off" required type="text" id="swal-input3" class="swal2-input" placeholder="PRIMARY TAG" value="${tag1}">` +
         `<input autocomplete="off" required type="text" id="swal-input4" class="swal2-input" placeholder="SECONDARY TAG" value="${tag2}">`,
-      focusConfirm: false,
+      focusConfirm: true,
+      focusCancel: false,
       confirmButtonColor: '#8bf349',
       showCancelButton: true,
       color: '#06555a',
