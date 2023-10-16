@@ -19,7 +19,11 @@ function Dashboard() {
 
   const [budget, setUserBudget] = useState(null); // Initialize as null
   const [budgetLoaded, setBudgetLoaded] = useState(false); // Track if the budget has loaded
-
+  const [name, setName] = useState('User');
+  const getName = () => {
+    const nameUser = window.localStorage.getItem('name');
+    setName(nameUser);
+  };
   const fetchBudget = async () => {
     try {
       const response = await getBudget();
@@ -33,6 +37,7 @@ function Dashboard() {
 
   useEffect(() => {
     fetchBudget();
+    getName();
   }, []);
 
   const getUserInput = async () => {
@@ -102,7 +107,7 @@ function Dashboard() {
       </div>
       <div className="header">
         <div className="text">
-          <h1 className="H1">Hello Adham,</h1>
+          <h1 className="H1">Hello {name},</h1>
           <h2 className="H2">
             Your Budget: <br /> <span>${budget}</span>
           </h2>

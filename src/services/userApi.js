@@ -70,6 +70,7 @@ export const loginUser = async (email, password) => {
   if (loginResponse.ok) {
     window.localStorage.setItem('token', loginData.token);
     const token = window.localStorage.getItem('token');
+    window.localStorage.setItem('name', loginData.name);
 
     // Fetch join date request
     const joinDateResponse = await fetch(url(joinDateEndpoint), {
