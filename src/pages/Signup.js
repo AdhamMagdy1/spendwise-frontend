@@ -3,6 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import goback from '../assets/images/goback.svg';
 import '../assets/styles/Auth.css';
 import { registerUser } from '../services/userApi';
+
 function Signup() {
   const navigate = useNavigate();
   const goBack = () => {
@@ -12,17 +13,33 @@ function Signup() {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [showPasswordTooltip, setShowPasswordTooltip] = useState(false);
+  const [isSubmitting, setIsSubmitting] = useState(false);
 
-  const handleSubmit = (event) => {
+  const handleSubmit = async (event) => {
     event.preventDefault();
+
+    // Check if already submitting
+    if (isSubmitting) {
+      return;
+    }
+
+    // Start the submission
+    setIsSubmitting(true);
 
     // Validate the form data
     if (!name || !email || password.length < 6) {
       // Display the tooltip for the password field
       setShowPasswordTooltip(true);
+      setIsSubmitting(false);
       return;
     }
-    registerUser(name, email, password);
+
+    try {
+      await registerUser(name, email, password);
+    } finally {
+      // Finish the submission, whether successful or not
+      setIsSubmitting(false);
+    }
   };
 
   const handlePasswordChange = (event) => {
@@ -76,7 +93,12 @@ function Signup() {
           )}
         </div>
 
-        <input className="H3 button" type="submit" value="Sign up" />
+        <input
+          className="H3 button"
+          type="submit"
+          value={isSubmitting ? 'Loading...' : 'Sign up'} // Change button text
+          disabled={isSubmitting}
+        />
       </form>
     </div>
   );

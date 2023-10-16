@@ -28,6 +28,8 @@ export const registerUser = async (name, email, password) => {
       icon: 'success',
       confirmButtonColor: '#8bf349',
       color: '#06555a',
+    }).then((isConfirmed) => {
+      window.location.href = './login';
     });
   } else {
     // Status code is not OK

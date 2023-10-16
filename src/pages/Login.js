@@ -12,19 +12,36 @@ function Login() {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [showPasswordTooltip, setShowPasswordTooltip] = useState(false);
+  const [isSubmitting, setIsSubmitting] = useState(false);
 
-  const handleSubmit = (event) => {
+  const handleSubmit = async (event) => {
     event.preventDefault();
+
+    // Check if already submitting
+    if (isSubmitting) {
+      return;
+    }
+
+    // Start the submission
+    setIsSubmitting(true);
 
     // Validate the form data
     if (!email || !password || password.length < 6) {
       // Display the tooltip for the password field
       setShowPasswordTooltip(true);
+      setIsSubmitting(false);
       return;
     }
-    // Send the form data to the backend server
-    loginUser(email, password);
+
+    try {
+      // Send the form data to the backend server
+      await loginUser(email, password);
+    } finally {
+      // Finish the submission, whether successful or not
+      setIsSubmitting(false);
+    }
   };
+
   const handlePasswordChange = (event) => {
     // Check if the password has reached 6 characters or more
     if (event.target.value.length >= 6) {
@@ -34,6 +51,7 @@ function Login() {
     // Update the password state
     setPassword(event.target.value);
   };
+
   return (
     <div className="signup">
       <div className="goback" onClick={goBack}>
@@ -66,7 +84,12 @@ function Login() {
           )}
         </div>
 
-        <input className="H3 button" type="submit" value="Login" />
+        <input
+          className="H3 button"
+          type="submit"
+          value={isSubmitting ? "Loading..." : "Login"} // Change button text
+          disabled={isSubmitting}
+        />
       </form>
     </div>
   );
