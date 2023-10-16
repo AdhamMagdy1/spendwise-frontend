@@ -4,10 +4,16 @@ import { getSpendingInRange } from '../services/spendingApi';
 
 function View() {
   const joinDate = window.localStorage.getItem('joinDate');
-  const [startDate, setStartDate] = useState(new Date(joinDate));
-  const [endDate, setEndDate] = useState(new Date(getTodayDate()));
+  const storedStartDate = window.localStorage.getItem('startDate');
+  const storedEndDate = window.localStorage.getItem('endDate');
+
+  const defaultStartDate = new Date(storedStartDate || joinDate);
+  const defaultEndDate = new Date(storedEndDate || getTodayDate());
+
+  const [startDate, setStartDate] = useState(defaultStartDate);
+  const [endDate, setEndDate] = useState(defaultEndDate);
   const [data, setData] = useState({ spendingRecords: [] });
-  const [isLoading, setIsLoading] = useState(true); // New loading state
+  const [isLoading, setIsLoading] = useState(true);
 
   const getData = async (startDate, endDate) => {
     try {
@@ -16,9 +22,9 @@ function View() {
         endDate.toISOString()
       );
       setData(spendingData);
-      setIsLoading(false); // Data has been loaded
+      setIsLoading(false);
     } catch (error) {
-      setIsLoading(false); // Handle errors by setting isLoading to false
+      setIsLoading(false);
     }
   };
   const addSlideAnimation = () => {
@@ -34,6 +40,11 @@ function View() {
       });
     });
   };
+  useEffect(() => {
+    // Save the start and end dates to local storage whenever they change
+    window.localStorage.setItem('startDate', startDate.toISOString());
+    window.localStorage.setItem('endDate', endDate.toISOString());
+  }, [startDate, endDate]);
 
   useEffect(() => {
     getData(startDate, endDate);
@@ -73,8 +84,10 @@ function View() {
             min={joinDate}
             max={getTodayDate()}
             onChange={(e) => {
-              const selctedDate = new Date(e.target.value);
-              setStartDate(isValidDate(selctedDate) ? selctedDate : new Date());
+              const selectedDate = new Date(e.target.value);
+              setStartDate(
+                isValidDate(selectedDate) ? selectedDate : new Date()
+              );
             }}
           />
         </div>
@@ -87,12 +100,13 @@ function View() {
             min={startDate.toISOString().split('T')[0]}
             max={getTodayDate()}
             onChange={(e) => {
-              const selctedDate = new Date(e.target.value);
-              setEndDate(isValidDate(selctedDate) ? selctedDate : new Date());
+              const selectedDate = new Date(e.target.value);
+              setEndDate(isValidDate(selectedDate) ? selectedDate : new Date());
             }}
           />
         </div>
       </div>
+
       <div className="view">
         {isLoading ? ( // Show a loading message while data is being fetched
           <p>Loading data...</p>

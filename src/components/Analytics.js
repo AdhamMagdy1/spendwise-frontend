@@ -10,10 +10,17 @@ function Analytics() {
   Chart.defaults.font.family = 'Poppins';
   Chart.defaults.color = '#06555a';
   const joinDate = window.localStorage.getItem('joinDate');
-  const [startDate, setStartDate] = useState(new Date(joinDate));
-  const [endDate, setEndDate] = useState(new Date(getTodayDate()));
+
+  // Retrieve start and end dates from local storage, or set defaults
+  const storedStartDate = window.localStorage.getItem('startDate');
+  const storedEndDate = window.localStorage.getItem('endDate');
+  const defaultStartDate = new Date(storedStartDate || joinDate);
+  const defaultEndDate = new Date(storedEndDate || getTodayDate());
+
+  const [startDate, setStartDate] = useState(defaultStartDate);
+  const [endDate, setEndDate] = useState(defaultEndDate);
   const [data, setData] = useState({ spendingRecords: [] });
-  const [isLoading, setIsLoading] = useState(true); // New loading state
+  const [isLoading, setIsLoading] = useState(true);
 
   const getData = async (startDate, endDate) => {
     try {
@@ -215,6 +222,11 @@ function Analytics() {
       },
     },
   };
+  useEffect(() => {
+    // Save the start and end dates to local storage whenever they change
+    window.localStorage.setItem('startDate', startDate.toISOString());
+    window.localStorage.setItem('endDate', endDate.toISOString());
+  }, [startDate, endDate]);
   return (
     <div className="All">
       <div className="datePick H3">
