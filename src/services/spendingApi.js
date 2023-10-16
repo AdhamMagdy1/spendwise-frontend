@@ -27,7 +27,7 @@ export const getSpendingInRange = async (startDate, EndDate) => {
       text: errorMessage,
       confirmButtonColor: '#8bf349',
       color: '#06555a',
-    })
+    });
   }
 };
 
@@ -42,8 +42,8 @@ export const createNewSpending = async (date, formValues) => {
     date: date,
     product: formValues[0],
     price: formValues[1],
-    primaryTag: formValues[2],
-    secondaryTag: formValues[3],
+    primaryTag: formValues[2].trim(),
+    secondaryTag: formValues[3].trim(),
   };
   const response = await fetch(url, {
     method: 'POST',
@@ -76,7 +76,7 @@ export const createNewSpending = async (date, formValues) => {
       text: errorMessage,
       confirmButtonColor: '#8bf349',
       color: '#06555a',
-    })
+    });
   }
 };
 
@@ -115,12 +115,12 @@ export const deleteSpending = async (id) => {
       text: errorMessage,
       confirmButtonColor: '#8bf349',
       color: '#06555a',
-    })
+    });
   }
 };
 
 // Function to create a new speinign record
-export const editSpending = async (id, date , formValues) => {
+export const editSpending = async (id, date, formValues) => {
   const endpoint = `/spending/spending/${id}`;
   const url = baseUrl + endpoint;
   const token = window.localStorage.getItem('token');
@@ -149,7 +149,7 @@ export const editSpending = async (id, date , formValues) => {
       icon: 'success',
       confirmButtonColor: '#8bf349',
       color: '#06555a',
-    })
+    });
   } else {
     // Status code is not OK
     const errorMessage = responseData.message || responseData.errors[0].msg;
@@ -160,6 +160,6 @@ export const editSpending = async (id, date , formValues) => {
       text: errorMessage,
       confirmButtonColor: '#8bf349',
       color: '#06555a',
-    })
+    });
   }
 };
