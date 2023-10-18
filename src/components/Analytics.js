@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import Chart from 'chart.js/auto';
-import { Line, Pie } from 'react-chartjs-2';
+import { Line, Pie, Bar } from 'react-chartjs-2';
 import ChartDeferred from 'chartjs-plugin-deferred';
 import '../assets/styles/components/Analytics.css';
 import { getSpendingInRange } from '../services/spendingApi';
@@ -21,6 +21,7 @@ function Analytics() {
   const [endDate, setEndDate] = useState(defaultEndDate);
   const [data, setData] = useState({ spendingRecords: [] });
   const [isLoading, setIsLoading] = useState(true);
+  const [tagType, setTagType] = useState('secondary');
 
   const getData = async (startDate, endDate) => {
     try {
@@ -222,6 +223,107 @@ function Analytics() {
       },
     },
   };
+
+  const uniqueTagsAndTotalPriceByTag = [];
+  // Loop through the array of objects.
+  data.spendingRecords.forEach((object) => {
+    // Get the tag based on the tag type.
+    const tag = tagType === 'primary' ? object.primaryTag : object.secondaryTag;
+
+    // Get the other tag.
+    const otherTag =
+      tagType === 'primary' ? object.secondaryTag : object.primaryTag;
+
+    // Get the price.
+    const price = object.price;
+
+    // If the tag does not exist in the new object, create a new object for it.
+    if (!uniqueTagsAndTotalPriceByTag.hasOwnProperty(tag)) {
+      uniqueTagsAndTotalPriceByTag[tag] = {};
+    }
+
+    // If the other tag does not exist in the object for the tag, create a new property for it.
+    if (!uniqueTagsAndTotalPriceByTag[tag].hasOwnProperty(otherTag)) {
+      uniqueTagsAndTotalPriceByTag[tag][otherTag] = 0;
+    }
+
+    // Add the price to the total price for the other tag.
+    uniqueTagsAndTotalPriceByTag[tag][otherTag] += price;
+  });
+
+  function generateChartData(inputData) {
+    // Extract labels (main categories) from the input data
+    const labels = Object.keys(inputData);
+    const subLabels = new Set();
+
+    // Create an array to store the data for each sub-label
+    const subLabelData = {};
+
+    // Loop through the input data to collect sub-labels and their data
+    for (const label of labels) {
+      const subCategories = Object.keys(inputData[label]);
+      for (const subCategory of subCategories) {
+        subLabels.add(subCategory);
+        if (!subLabelData[subCategory]) {
+          subLabelData[subCategory] = Array(labels.length).fill(0);
+        }
+        subLabelData[subCategory][labels.indexOf(label)] =
+          inputData[label][subCategory];
+      }
+    }
+
+    // Generate random colors for the datasets
+    const backgroundColors = Array.from({ length: subLabels.size }, () =>
+      getRandomColor()
+    );
+
+    // Create the datasets
+    const datasets = Array.from(subLabels).map((subLabel, index) => {
+      return {
+        label: subLabel,
+        data: subLabelData[subLabel],
+        backgroundColor: backgroundColors[index],
+      };
+    });
+
+    return {
+      labels: labels,
+      datasets: datasets,
+    };
+  }
+  function getRandomColor() {
+    const letters = '0123456789ABCDEF';
+    let color = '#';
+    for (let i = 0; i < 6; i++) {
+      color += letters[Math.floor(Math.random() * 16)];
+    }
+    return color;
+  }
+  const thedata = generateChartData(uniqueTagsAndTotalPriceByTag);
+  console.log(thedata);
+  const barchartData = {
+    labels: thedata.labels,
+    datasets: thedata.datasets,
+  };
+
+  const barchartOptions = {
+    type: 'bar',
+    plugins: {
+      title: {
+        display: true,
+        text: 'Stacked Bar Chart',
+      },
+    },
+    responsive: true,
+    scales: {
+      x: {
+        stacked: true,
+      },
+      y: {
+        stacked: true,
+      },
+    },
+  };
   useEffect(() => {
     // Save the start and end dates to local storage whenever they change
     window.localStorage.setItem('startDate', startDate.toISOString());
@@ -274,6 +376,9 @@ function Analytics() {
             </div>
             <div className="chart-container">
               <Pie data={secondaryTagData} options={secondaryPieChartOptions} />
+            </div>
+            <div className="chart-container">
+              <Bar data={barchartData} options={barchartOptions} />
             </div>
           </>
         )}
