@@ -22,7 +22,6 @@ function Analytics() {
   const [data, setData] = useState({ spendingRecords: [] });
   const [isLoading, setIsLoading] = useState(true);
   const [tagType, setTagType] = useState('secondary');
-
   const getData = async (startDate, endDate) => {
     try {
       const spendingData = await getSpendingInRange(
@@ -151,11 +150,18 @@ function Analytics() {
         (secondaryTagPrices[record.secondaryTag] || 0) + record.price;
     }
   });
-  const primaryTagData = {
-    labels: Object.keys(primaryTagPrices),
+
+  const pieTagData = {
+    labels:
+      tagType === 'primary'
+        ? Object.keys(primaryTagPrices)
+        : Object.keys(secondaryTagPrices),
     datasets: [
       {
-        data: Object.values(primaryTagPrices),
+        data:
+          tagType === 'primary'
+            ? Object.values(primaryTagPrices)
+            : Object.values(secondaryTagPrices),
         backgroundColor: [
           '#EAE509',
           '#7DCE13',
@@ -167,49 +173,12 @@ function Analytics() {
       },
     ],
   };
-
-  const secondaryTagData = {
-    labels: Object.keys(secondaryTagPrices),
-    datasets: [
-      {
-        data: Object.values(secondaryTagPrices),
-        backgroundColor: [
-          '#EAE509',
-          '#7DCE13',
-          '#5BB318',
-          '#2B7A0B',
-          '#A8DF8E',
-        ],
-        borderColor: '#f1ffe9',
-      },
-    ],
-  };
-
-  const primaryPieChartOptions = {
+  const PieChartOptions = {
     // maintainAspectRatio: false,
     plugins: {
       title: {
         display: true,
-        text: 'Spendings by primary tags',
-        color: '#06555a',
-        position: 'top',
-        align: 'center',
-        font: {
-          family: 'Poppins',
-          size: 14,
-          weight: 'bold',
-        },
-        padding: 8,
-        fullSize: true,
-      },
-    },
-  };
-  const secondaryPieChartOptions = {
-    // maintainAspectRatio: false,
-    plugins: {
-      title: {
-        display: true,
-        text: 'Spendings by secondary tags',
+        text: `Spendings by ${tagType} tags`,
         color: '#06555a',
         position: 'top',
         align: 'center',
@@ -358,7 +327,7 @@ function Analytics() {
     type: 'bar',
     plugins: {
       title: {
-        display: true,
+        display: false,
         text: 'Stacked Bar Chart',
       },
     },
@@ -425,10 +394,7 @@ function Analytics() {
               <Line data={chartData} options={chartOptions} />
             </div>
             <div className="chart-container">
-              <Pie data={primaryTagData} options={primaryPieChartOptions} />
-            </div>
-            <div className="chart-container">
-              <Pie data={secondaryTagData} options={secondaryPieChartOptions} />
+              <Pie data={pieTagData} options={PieChartOptions} />
             </div>
             <div className="chart-container">
               <Bar data={barchartData} options={barchartOptions} />
