@@ -130,8 +130,8 @@ export const editSpending = async (id, date, formValues) => {
     date: date,
     product: formValues[0],
     price: formValues[1],
-    primaryTag: formValues[2],
-    secondaryTag: formValues[3],
+    primaryTag: formValues[2].trim(),
+    secondaryTag: formValues[3].trim(),
   };
   const response = await fetch(url, {
     method: 'PUT',
