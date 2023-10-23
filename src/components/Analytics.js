@@ -317,7 +317,6 @@ function Analytics() {
   }
 
   const thedata = generateChartData(uniqueTagsAndTotalPriceByTag);
-  console.log(thedata);
   const barchartData = {
     labels: thedata.labels,
     datasets: thedata.datasets,
