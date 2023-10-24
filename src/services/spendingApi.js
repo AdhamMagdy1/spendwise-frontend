@@ -149,6 +149,10 @@ export const editSpending = async (id, date, formValues) => {
       icon: 'success',
       confirmButtonColor: '#8bf349',
       color: '#06555a',
+    }).then((result) => {
+      if (result.isConfirmed) {
+        window.location.href = './dashboard';
+      }
     });
   } else {
     // Status code is not OK
