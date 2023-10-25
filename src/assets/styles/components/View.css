@@ -33,3 +33,9 @@
 .datePick span {
   color: var(--Secondry-color);
 }
+.totalAndExcel {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding-top: 10px;
+}

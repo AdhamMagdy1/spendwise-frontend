@@ -1,11 +1,14 @@
 import React, { useState, useEffect, useLayoutEffect } from 'react';
+import * as XLSX from 'xlsx'; // Import the xlsx library
 import '../assets/styles/components/View.css';
+import excel from '../assets/images/Excel.svg';
 import { getSpendingInRange } from '../services/spendingApi';
 
 function View() {
   const joinDate = window.localStorage.getItem('joinDate');
   const storedStartDate = window.localStorage.getItem('startDate');
   const storedEndDate = window.localStorage.getItem('endDate');
+  const nameUser = window.localStorage.getItem('name');
 
   const defaultStartDate = new Date(storedStartDate || joinDate);
   const defaultEndDate = new Date(storedEndDate || getTodayDate());
@@ -71,6 +74,46 @@ function View() {
   function isValidDate(date) {
     return date instanceof Date && !isNaN(date);
   }
+  const downloadDataAsXLSX = () => {
+    const dataForXLSX = data.spendingRecords.map((record) => ({
+      Date: formatDate(record.date),
+      Name: record.product,
+      Price: record.price,
+      'Primary Tag': record.primaryTag,
+      'Secondary Tag': record.secondaryTag,
+    }));
+    // Add rows at the beginning of the XLSX data
+    dataForXLSX.unshift(
+      // Row with "SpendWise" + user name
+      {
+        '': `SpendWise ${nameUser}`,
+      },
+      // Row with the date range
+      {
+        '': `Date Range: ${formatDate(startDate)} to ${formatDate(endDate)}`,
+      },
+      // Row with the total price
+      {
+        '': `Total Price: $${total}`,
+      }
+    );
+
+    const ws = XLSX.utils.json_to_sheet(dataForXLSX);
+    const wb = XLSX.utils.book_new();
+    XLSX.utils.book_append_sheet(wb, ws, 'Spending Data');
+
+    // Generate a base64-encoded XLSX data
+    const base64data = XLSX.write(wb, { bookType: 'xlsx', type: 'base64' });
+
+    // Create a data URI from the base64-encoded data
+    const dataURI = `data:application/vnd.openxmlformats-officedocument.spreadsheetml.sheet;base64,${base64data}`;
+
+    // Create a link element for downloading
+    const a = document.createElement('a');
+    a.href = dataURI;
+    a.download = 'spending_data.xlsx';
+    a.click();
+  };
 
   return (
     <div className="contnet">
@@ -131,11 +174,20 @@ function View() {
             ))}
           </div>
         )}
+        <div className='totalAndExcel'>
         <div className="total-price H3">
           <p>
             Total Price: $<span>{total}</span>
           </p>
         </div>
+        <img
+          src={excel}
+          alt="download Excel"
+          className="download-button"
+          onClick={downloadDataAsXLSX}
+        />
+        </div>
+     
       </div>
     </div>
   );
