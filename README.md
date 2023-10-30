@@ -1,70 +1,29 @@
-# Getting Started with Create React App
+# SpendWise Frontend
+![spendwise](https://res.cloudinary.com/dlvznsgmk/image/upload/v1698688720/Dribbble_shot_HD_-_1_z5dne9.png)
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+SpendWise is a budget tracking web application that helps users manage and track their expenses. This README provides an overview of the SpendWise frontend, outlining the technologies used and the main functionalities implemented.
 
-## Available Scripts
+## Technologies Used
 
-In the project directory, you can run:
+- **React**: The frontend is built using React, a JavaScript library for building user interfaces.
+- **React Router**: React Router is used for routing within the application, enabling navigation between different views.
+- **Chart.js**: Chart.js is used to create data visualization charts.
+- **SweetAlert2**: SweetAlert2 is used for displaying user-friendly alerts and messages.
+- **LocalStorage**: The Local Storage feature is used for client-side data persistence.
 
-### `npm start`
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
+## Features
+- User Authentication: Users can create an account, log in, and log out.
 
-The page will reload when you make changes.\
-You may also see any lint errors in the console.
+- Spending Records: Users can view their spending records in a tabular format, including details like date, name, price, and tags.
 
-### `npm test`
+- Data Visualization: The application provides data visualization in the form of charts to help users gain insights into their spending habits.
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+- Add Spending Records: Users can add new spending records, including the date, product name, price, and tags.
 
-### `npm run build`
+- Date Range Selection: Users can filter spending records based on specific date ranges.
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+- Budget Tracking: Users can set and track their budget to stay within their financial goals.
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+- Export Data: Users can export their spending data as an XLSX file.
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
-
-### `npm run eject`
-
-**Note: this is a one-way operation. Once you `eject`, you can't go back!**
-
-If you aren't satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
-
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you're on your own.
-
-You don't have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn't feel obligated to use this feature. However we understand that this tool wouldn't be useful if you couldn't customize it when you are ready for it.
-
-## Learn More
-
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
-
-To learn React, check out the [React documentation](https://reactjs.org/).
-
-### Code Splitting
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
-
-### Analyzing the Bundle Size
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
-
-### Making a Progressive Web App
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
-
-### Advanced Configuration
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
-
-### Deployment
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
-
-### `npm run build` fails to minify
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
